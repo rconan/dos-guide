@@ -1,0 +1,533 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>DOS API - DOS Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="GMT Dynamic Optics Simulation User Guide">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="ch01-00-getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch01-01-installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch01-02-dos-api.html" class="active"><strong aria-hidden="true">1.2.</strong> DOS API</a></li></ol></li><li class="chapter-item expanded "><a href="ch02-00-optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch02-01-installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch02-02-example.html"><strong aria-hidden="true">2.2.</strong> Example</a></li></ol></li><li class="chapter-item expanded "><a href="ch03-00-fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch03-01-installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="ch03-02-example.html"><strong aria-hidden="true">3.2.</strong> Example</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">4.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">4.1.</strong> IO variants</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">DOS Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="dos-api"><a class="header" href="#dos-api">DOS API</a></h2>
+<p>The DOS API is defined in the Rust crate <a href="https://github.com/rconan/dosio">dosio</a>. 
+<code>dosio</code> consists in the enum <code>IO</code> with as many variants as there are inputs and outputs to <em>DOS</em> and in the trait <code>Dos</code>. 
+Every component that needs to be included in a DOS end-to-end model, must implement the <code>inputs</code> and <code>outputs</code> methods of the <code>Dos</code> trait as well as implementing the <a href="https://doc.rust-lang.org/std/iter/index.html#implementing-iterator"><code>Iterator</code></a> trait.
+The inputs data to the component is passed as an argument to the <code>inputs</code> method and the component outputs is returned by the <code>outputs</code> method.
+Both inputs and outputs data are contained into variants of the <code>IO</code> enum.
+The state of the component is updated with the <code>step</code> method of the <code>Dos</code> trait which in turns calls the <code>next</code> method of the <code>Iterator</code> trait implemented by the component.</p>
+<p>In the following example, a simple integrator controller is integrated with DOS using the interface defined in the crate <code>dosio</code>. </p>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<p>A new project is created with Cargo:</p>
+<pre><code class="language-console">$ cargo init
+</code></pre>
+<p>The Cargo command creates a <em>Cargo.toml</em> file
+and a <em>main.rs</em> file in the <em>src</em> directory.
+The <em>Cargo.toml</em> contains the package meta-data and an optional list of the project dependencies, which is empty for now:</p>
+<pre><code class="language-toml">[package]
+name = &quot;ch01-02-dos-api&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Rod Conan &lt;rconan@gmto.org&gt;&quot;]
+edition = &quot;2018&quot;
+
+[dependencies]
+</code></pre>
+<p>In the <em>main.rs</em> file, we add the simple integrator model represented by the <code>Integrate</code> structure and implement the <code>Iterator</code>  trait for the <code>Integrate</code> structure:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Default)]
+pub struct Integrate {
+    /// integrator gain
+    gain: f64,
+    /// output vector
+    y: Vec&lt;f64&gt;,
+    /// input vector
+    u: Vec&lt;f64&gt;,
+}
+impl Integrate {
+    pub fn new(gain: f64, n_data: usize) -&gt; Self {
+        Self {
+            gain,
+            y: vec![0f64; n_data],
+            ..Default::default()
+        }
+    }
+    pub fn output(&amp;self) -&gt; Option&lt;Vec&lt;f64&gt;&gt; {
+        Some(self.y.clone())
+    }
+}
+impl Iterator for Integrate {
+    type Item = ();
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        let gain = self.gain;
+        self.y.iter_mut().zip(self.u.iter()).for_each(|(a, v)| {
+            *a += *v * gain;
+        });
+        Some(())
+    }
+}
+
+<span class="boring">use dosio::{io::jar, DOSIOSError, Dos, IO};
+</span><span class="boring">
+</span><span class="boring">impl Dos for Integrate {
+</span><span class="boring">    type Input = Vec&lt;f64&gt;;
+</span><span class="boring">    type Output = Vec&lt;f64&gt;;
+</span><span class="boring">    fn inputs(&amp;mut self, data: Option&lt;Vec&lt;IO&lt;Self::Input&gt;&gt;&gt;) -&gt; Result&lt;&amp;mut Self, DOSIOSError&gt; {
+</span><span class="boring">        self.u = data
+</span><span class="boring">            .map(|data| {
+</span><span class="boring">                data.into_iter().find_map(|io| match io {
+</span><span class="boring">                    IO::MCM2RB6D { data: value } =&gt; value,
+</span><span class="boring">                    _ =&gt; None,
+</span><span class="boring">                })
+</span><span class="boring">            })
+</span><span class="boring">            .flatten()
+</span><span class="boring">            .map(|x| {
+</span><span class="boring">                x.chunks(6)
+</span><span class="boring">                    .flat_map(|x| x[3..5].to_vec())
+</span><span class="boring">                    .collect::&lt;Vec&lt;f64&gt;&gt;()
+</span><span class="boring">            })
+</span><span class="boring">            .ok_or_else(|| DOSIOSError::Inputs(&quot;Integrate MCM2RB6D IO input error&quot;.into()))?;
+</span><span class="boring">        Ok(self)
+</span><span class="boring">    }
+</span><span class="boring">    fn outputs(&amp;mut self) -&gt; Option&lt;Vec&lt;IO&lt;Self::Output&gt;&gt;&gt; {
+</span><span class="boring">        self.output()
+</span><span class="boring">            .map(|y| {
+</span><span class="boring">                y.chunks(2)
+</span><span class="boring">                    .flat_map(|y| {
+</span><span class="boring">                        let mut data = vec![0f64; 6];
+</span><span class="boring">                        data[3] = y[0];
+</span><span class="boring">                        data[4] = y[1];
+</span><span class="boring">                        data
+</span><span class="boring">                    })
+</span><span class="boring">                    .collect::&lt;Vec&lt;f64&gt;&gt;()
+</span><span class="boring">            })
+</span><span class="boring">            .map(|x| vec![jar::MCM2RB6D::io_with(x)])
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    // Integrator controller
+</span><span class="boring">    let mut integrator = Integrate::new(0.5, 14);
+</span><span class="boring">    // M2 rigid body motions to DOS input
+</span><span class="boring">    let mut m2_rbm = vec![vec![0f64; 6]; 7];
+</span><span class="boring">    m2_rbm[0][3] = 1f64;
+</span><span class="boring">    let dos_in = vec![jar::MCM2RB6D::io_with(
+</span><span class="boring">        m2_rbm.into_iter().flatten().collect::&lt;Vec&lt;f64&gt;&gt;(),
+</span><span class="boring">    )];
+</span><span class="boring">    // DOS stepping
+</span><span class="boring">    let dos_out = integrator.inputs(Some(dos_in))?.step()?.outputs();
+</span><span class="boring">    println!(&quot;DOS output:&quot;);
+</span><span class="boring">    println!(&quot;{:#?}&quot;, dos_out);
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
+<p>Next, we add the crate <code>dosio</code> as a project dependency:</p>
+<pre><code class="language-toml">[package]
+name = &quot;ch01-02-dos-api&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Rod Conan &lt;rconan@gmto.org&gt;&quot;]
+edition = &quot;2018&quot;
+
+[dependencies]
+dosio = { git = &quot;https://github.com/rconan/dosio.git&quot;, branch = &quot;main&quot; }
+
+</code></pre>
+<p>and we implement the <code>Dos</code> trait for <code>Integrate</code>:</p>
+<pre><code class="language-rust no_run noplayground"><span class="boring">#[derive(Default)]
+</span><span class="boring">pub struct Integrate {
+</span><span class="boring">    /// integrator gain
+</span><span class="boring">    gain: f64,
+</span><span class="boring">    /// output vector
+</span><span class="boring">    y: Vec&lt;f64&gt;,
+</span><span class="boring">    /// input vector
+</span><span class="boring">    u: Vec&lt;f64&gt;,
+</span><span class="boring">}
+</span><span class="boring">impl Integrate {
+</span><span class="boring">    pub fn new(gain: f64, n_data: usize) -&gt; Self {
+</span><span class="boring">        Self {
+</span><span class="boring">            gain,
+</span><span class="boring">            y: vec![0f64; n_data],
+</span><span class="boring">            ..Default::default()
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">    pub fn output(&amp;self) -&gt; Option&lt;Vec&lt;f64&gt;&gt; {
+</span><span class="boring">        Some(self.y.clone())
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">impl Iterator for Integrate {
+</span><span class="boring">    type Item = ();
+</span><span class="boring">    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+</span><span class="boring">        let gain = self.gain;
+</span><span class="boring">        self.y.iter_mut().zip(self.u.iter()).for_each(|(a, v)| {
+</span><span class="boring">            *a += *v * gain;
+</span><span class="boring">        });
+</span><span class="boring">        Some(())
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span>use dosio::{io::jar, DOSIOSError, Dos, IO};
+
+impl Dos for Integrate {
+    type Input = Vec&lt;f64&gt;;
+    type Output = Vec&lt;f64&gt;;
+    fn inputs(&amp;mut self, data: Option&lt;Vec&lt;IO&lt;Self::Input&gt;&gt;&gt;) -&gt; Result&lt;&amp;mut Self, DOSIOSError&gt; {
+        self.u = data
+            .map(|data| {
+                data.into_iter().find_map(|io| match io {
+                    IO::MCM2RB6D { data: value } =&gt; value,
+                    _ =&gt; None,
+                })
+            })
+            .flatten()
+            .map(|x| {
+                x.chunks(6)
+                    .flat_map(|x| x[3..5].to_vec())
+                    .collect::&lt;Vec&lt;f64&gt;&gt;()
+            })
+            .ok_or_else(|| DOSIOSError::Inputs(&quot;Integrate MCM2RB6D IO input error&quot;.into()))?;
+        Ok(self)
+    }
+    fn outputs(&amp;mut self) -&gt; Option&lt;Vec&lt;IO&lt;Self::Output&gt;&gt;&gt; {
+        self.output()
+            .map(|y| {
+                y.chunks(2)
+                    .flat_map(|y| {
+                        let mut data = vec![0f64; 6];
+                        data[3] = y[0];
+                        data[4] = y[1];
+                        data
+                    })
+                    .collect::&lt;Vec&lt;f64&gt;&gt;()
+            })
+            .map(|x| vec![jar::MCM2RB6D::io_with(x)])
+    }
+}
+<span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    // Integrator controller
+</span><span class="boring">    let mut integrator = Integrate::new(0.5, 14);
+</span><span class="boring">    // M2 rigid body motions to DOS input
+</span><span class="boring">    let mut m2_rbm = vec![vec![0f64; 6]; 7];
+</span><span class="boring">    m2_rbm[0][3] = 1f64;
+</span><span class="boring">    let dos_in = vec![jar::MCM2RB6D::io_with(
+</span><span class="boring">        m2_rbm.into_iter().flatten().collect::&lt;Vec&lt;f64&gt;&gt;(),
+</span><span class="boring">    )];
+</span><span class="boring">    // DOS stepping
+</span><span class="boring">    let dos_out = integrator.inputs(Some(dos_in))?.step()?.outputs();
+</span><span class="boring">    println!(&quot;DOS output:&quot;);
+</span><span class="boring">    println!(&quot;{:#?}&quot;, dos_out);
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
+<p>Now we can write the main function:</p>
+<pre><code class="language-rust no_run noplayground"><span class="boring">#[derive(Default)]
+</span><span class="boring">pub struct Integrate {
+</span><span class="boring">    /// integrator gain
+</span><span class="boring">    gain: f64,
+</span><span class="boring">    /// output vector
+</span><span class="boring">    y: Vec&lt;f64&gt;,
+</span><span class="boring">    /// input vector
+</span><span class="boring">    u: Vec&lt;f64&gt;,
+</span><span class="boring">}
+</span><span class="boring">impl Integrate {
+</span><span class="boring">    pub fn new(gain: f64, n_data: usize) -&gt; Self {
+</span><span class="boring">        Self {
+</span><span class="boring">            gain,
+</span><span class="boring">            y: vec![0f64; n_data],
+</span><span class="boring">            ..Default::default()
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">    pub fn output(&amp;self) -&gt; Option&lt;Vec&lt;f64&gt;&gt; {
+</span><span class="boring">        Some(self.y.clone())
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">impl Iterator for Integrate {
+</span><span class="boring">    type Item = ();
+</span><span class="boring">    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+</span><span class="boring">        let gain = self.gain;
+</span><span class="boring">        self.y.iter_mut().zip(self.u.iter()).for_each(|(a, v)| {
+</span><span class="boring">            *a += *v * gain;
+</span><span class="boring">        });
+</span><span class="boring">        Some(())
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">use dosio::{io::jar, DOSIOSError, Dos, IO};
+</span><span class="boring">
+</span><span class="boring">impl Dos for Integrate {
+</span><span class="boring">    type Input = Vec&lt;f64&gt;;
+</span><span class="boring">    type Output = Vec&lt;f64&gt;;
+</span><span class="boring">    fn inputs(&amp;mut self, data: Option&lt;Vec&lt;IO&lt;Self::Input&gt;&gt;&gt;) -&gt; Result&lt;&amp;mut Self, DOSIOSError&gt; {
+</span><span class="boring">        self.u = data
+</span><span class="boring">            .map(|data| {
+</span><span class="boring">                data.into_iter().find_map(|io| match io {
+</span><span class="boring">                    IO::MCM2RB6D { data: value } =&gt; value,
+</span><span class="boring">                    _ =&gt; None,
+</span><span class="boring">                })
+</span><span class="boring">            })
+</span><span class="boring">            .flatten()
+</span><span class="boring">            .map(|x| {
+</span><span class="boring">                x.chunks(6)
+</span><span class="boring">                    .flat_map(|x| x[3..5].to_vec())
+</span><span class="boring">                    .collect::&lt;Vec&lt;f64&gt;&gt;()
+</span><span class="boring">            })
+</span><span class="boring">            .ok_or_else(|| DOSIOSError::Inputs(&quot;Integrate MCM2RB6D IO input error&quot;.into()))?;
+</span><span class="boring">        Ok(self)
+</span><span class="boring">    }
+</span><span class="boring">    fn outputs(&amp;mut self) -&gt; Option&lt;Vec&lt;IO&lt;Self::Output&gt;&gt;&gt; {
+</span><span class="boring">        self.output()
+</span><span class="boring">            .map(|y| {
+</span><span class="boring">                y.chunks(2)
+</span><span class="boring">                    .flat_map(|y| {
+</span><span class="boring">                        let mut data = vec![0f64; 6];
+</span><span class="boring">                        data[3] = y[0];
+</span><span class="boring">                        data[4] = y[1];
+</span><span class="boring">                        data
+</span><span class="boring">                    })
+</span><span class="boring">                    .collect::&lt;Vec&lt;f64&gt;&gt;()
+</span><span class="boring">            })
+</span><span class="boring">            .map(|x| vec![jar::MCM2RB6D::io_with(x)])
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span>fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Integrator controller
+    let mut integrator = Integrate::new(0.5, 14);
+    // M2 rigid body motions to DOS input
+    let mut m2_rbm = vec![vec![0f64; 6]; 7];
+    m2_rbm[0][3] = 1f64;
+    let dos_in = vec![jar::MCM2RB6D::io_with(
+        m2_rbm.into_iter().flatten().collect::&lt;Vec&lt;f64&gt;&gt;(),
+    )];
+    // DOS stepping
+    let dos_out = integrator.inputs(Some(dos_in))?.step()?.outputs();
+    println!(&quot;DOS output:&quot;);
+    println!(&quot;{:#?}&quot;, dos_out);
+    Ok(())
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="ch01-01-installation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="ch02-00-optical-model.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="ch01-01-installation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="ch02-00-optical-model.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
