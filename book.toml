@@ -10,4 +10,4 @@ description = "GMT Dynamic Optics Simulation User Guide"
 edition = "2018"
 
 [output.html]
-git-repository-url = "https://github.com/rust-lang/book"
+git-repository-url = "https://github.com/rconan/dos-guide"
