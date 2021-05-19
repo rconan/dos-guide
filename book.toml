@@ -1,0 +1,13 @@
+[book]
+authors = ["Rod Conan"]
+language = "en"
+multilingual = false
+src = "src"
+title = "DOS Guide"
+description = "GMT Dynamic Optics Simulation User Guide"
+
+[rust]
+edition = "2018"
+
+[output.html]
+git-repository-url = "https://github.com/rust-lang/book"
