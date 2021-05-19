@@ -78,12 +78,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut integrator = Integrate::new(0.5, 14);
     // M2 rigid body motions to DOS input
     let mut m2_rbm = vec![vec![0f64; 6]; 7];
-    m2_rbm[0][3] = 1f64;
+    m2_rbm[0][3] = 1f64; // Segment #1: Rx
     let dos_in = vec![jar::MCM2RB6D::io_with(
         m2_rbm.into_iter().flatten().collect::<Vec<f64>>(),
     )];
     // DOS stepping
     let dos_out = integrator.inputs(Some(dos_in))?.step()?.outputs();
+    // or equivalently:
+    // let dos_out = integrator.in_step_out(Some(dos_in))?;
     println!("DOS output:");
     println!("{:#?}", dos_out);
     Ok(())
