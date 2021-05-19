@@ -169,7 +169,7 @@
                     <main>
                         <h2 id="dos-api"><a class="header" href="#dos-api">DOS API</a></h2>
 <p>The DOS API is defined in the Rust crate <a href="https://github.com/rconan/dosio">dosio</a>. 
-<code>dosio</code> consists in the enum <code>IO</code> with as many variants as there are inputs and outputs to <em>DOS</em> and in the trait <code>Dos</code>. 
+<a href="https://rconan.github.io/dosio"><code>dosio</code></a> consists in the enum <code>IO</code> with as many variants as there are inputs and outputs to <em>DOS</em> and in the trait <code>Dos</code>. 
 Every component that needs to be included in a DOS end-to-end model, must implement the <code>inputs</code> and <code>outputs</code> methods of the <code>Dos</code> trait as well as implementing the <a href="https://doc.rust-lang.org/std/iter/index.html#implementing-iterator"><code>Iterator</code></a> trait.
 The inputs data to the component is passed as an argument to the <code>inputs</code> method and the component outputs is returned by the <code>outputs</code> method.
 Both inputs and outputs data are contained into variants of the <code>IO</code> enum.
@@ -506,6 +506,21 @@ impl Dos for Integrate {
 
         </div>
 
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
         
 
         
