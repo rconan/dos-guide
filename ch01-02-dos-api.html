@@ -230,6 +230,7 @@ impl Iterator for Integrate {
 </span><span class="boring">    type Output = Vec&lt;f64&gt;;
 </span><span class="boring">    fn inputs(&amp;mut self, data: Option&lt;Vec&lt;IO&lt;Self::Input&gt;&gt;&gt;) -&gt; Result&lt;&amp;mut Self, DOSIOSError&gt; {
 </span><span class="boring">        self.u = data
+</span><span class="boring">            // Identifying M2 42 segment rigid body motion IO variant
 </span><span class="boring">            .map(|data| {
 </span><span class="boring">                data.into_iter().find_map(|io| match io {
 </span><span class="boring">                    IO::MCM2RB6D { data: value } =&gt; value,
@@ -237,26 +238,25 @@ impl Iterator for Integrate {
 </span><span class="boring">                })
 </span><span class="boring">            })
 </span><span class="boring">            .flatten()
+</span><span class="boring">            // Extracting M2 14 Rx and Ry rigid body motions
 </span><span class="boring">            .map(|x| {
 </span><span class="boring">                x.chunks(6)
 </span><span class="boring">                    .flat_map(|x| x[3..5].to_vec())
 </span><span class="boring">                    .collect::&lt;Vec&lt;f64&gt;&gt;()
 </span><span class="boring">            })
+</span><span class="boring">            // Throwing an error if IO::MCM2RB6D is missing
 </span><span class="boring">            .ok_or_else(|| DOSIOSError::Inputs(&quot;Integrate MCM2RB6D IO input error&quot;.into()))?;
 </span><span class="boring">        Ok(self)
 </span><span class="boring">    }
 </span><span class="boring">    fn outputs(&amp;mut self) -&gt; Option&lt;Vec&lt;IO&lt;Self::Output&gt;&gt;&gt; {
 </span><span class="boring">        self.output()
+</span><span class="boring">            // Assigning M2 segment Rx and Ry to rigid body motion vector
 </span><span class="boring">            .map(|y| {
 </span><span class="boring">                y.chunks(2)
-</span><span class="boring">                    .flat_map(|y| {
-</span><span class="boring">                        let mut data = vec![0f64; 6];
-</span><span class="boring">                        data[3] = y[0];
-</span><span class="boring">                        data[4] = y[1];
-</span><span class="boring">                        data
-</span><span class="boring">                    })
+</span><span class="boring">                    .flat_map(|y| vec![0f64, 0f64, 0f64, y[0], y[1], 0f64])
 </span><span class="boring">                    .collect::&lt;Vec&lt;f64&gt;&gt;()
 </span><span class="boring">            })
+</span><span class="boring">            // Embedding the rigid body motions into the corresponding IO variant
 </span><span class="boring">            .map(|x| vec![jar::MCM2RB6D::io_with(x)])
 </span><span class="boring">    }
 </span><span class="boring">}
@@ -330,6 +330,7 @@ impl Dos for Integrate {
     type Output = Vec&lt;f64&gt;;
     fn inputs(&amp;mut self, data: Option&lt;Vec&lt;IO&lt;Self::Input&gt;&gt;&gt;) -&gt; Result&lt;&amp;mut Self, DOSIOSError&gt; {
         self.u = data
+            // Identifying M2 42 segment rigid body motion IO variant
             .map(|data| {
                 data.into_iter().find_map(|io| match io {
                     IO::MCM2RB6D { data: value } =&gt; value,
@@ -337,26 +338,25 @@ impl Dos for Integrate {
                 })
             })
             .flatten()
+            // Extracting M2 14 Rx and Ry rigid body motions
             .map(|x| {
                 x.chunks(6)
                     .flat_map(|x| x[3..5].to_vec())
                     .collect::&lt;Vec&lt;f64&gt;&gt;()
             })
+            // Throwing an error if IO::MCM2RB6D is missing
             .ok_or_else(|| DOSIOSError::Inputs(&quot;Integrate MCM2RB6D IO input error&quot;.into()))?;
         Ok(self)
     }
     fn outputs(&amp;mut self) -&gt; Option&lt;Vec&lt;IO&lt;Self::Output&gt;&gt;&gt; {
         self.output()
+            // Assigning M2 segment Rx and Ry to rigid body motion vector
             .map(|y| {
                 y.chunks(2)
-                    .flat_map(|y| {
-                        let mut data = vec![0f64; 6];
-                        data[3] = y[0];
-                        data[4] = y[1];
-                        data
-                    })
+                    .flat_map(|y| vec![0f64, 0f64, 0f64, y[0], y[1], 0f64])
                     .collect::&lt;Vec&lt;f64&gt;&gt;()
             })
+            // Embedding the rigid body motions into the corresponding IO variant
             .map(|x| vec![jar::MCM2RB6D::io_with(x)])
     }
 }
@@ -419,6 +419,7 @@ impl Dos for Integrate {
 </span><span class="boring">    type Output = Vec&lt;f64&gt;;
 </span><span class="boring">    fn inputs(&amp;mut self, data: Option&lt;Vec&lt;IO&lt;Self::Input&gt;&gt;&gt;) -&gt; Result&lt;&amp;mut Self, DOSIOSError&gt; {
 </span><span class="boring">        self.u = data
+</span><span class="boring">            // Identifying M2 42 segment rigid body motion IO variant
 </span><span class="boring">            .map(|data| {
 </span><span class="boring">                data.into_iter().find_map(|io| match io {
 </span><span class="boring">                    IO::MCM2RB6D { data: value } =&gt; value,
@@ -426,26 +427,25 @@ impl Dos for Integrate {
 </span><span class="boring">                })
 </span><span class="boring">            })
 </span><span class="boring">            .flatten()
+</span><span class="boring">            // Extracting M2 14 Rx and Ry rigid body motions
 </span><span class="boring">            .map(|x| {
 </span><span class="boring">                x.chunks(6)
 </span><span class="boring">                    .flat_map(|x| x[3..5].to_vec())
 </span><span class="boring">                    .collect::&lt;Vec&lt;f64&gt;&gt;()
 </span><span class="boring">            })
+</span><span class="boring">            // Throwing an error if IO::MCM2RB6D is missing
 </span><span class="boring">            .ok_or_else(|| DOSIOSError::Inputs(&quot;Integrate MCM2RB6D IO input error&quot;.into()))?;
 </span><span class="boring">        Ok(self)
 </span><span class="boring">    }
 </span><span class="boring">    fn outputs(&amp;mut self) -&gt; Option&lt;Vec&lt;IO&lt;Self::Output&gt;&gt;&gt; {
 </span><span class="boring">        self.output()
+</span><span class="boring">            // Assigning M2 segment Rx and Ry to rigid body motion vector
 </span><span class="boring">            .map(|y| {
 </span><span class="boring">                y.chunks(2)
-</span><span class="boring">                    .flat_map(|y| {
-</span><span class="boring">                        let mut data = vec![0f64; 6];
-</span><span class="boring">                        data[3] = y[0];
-</span><span class="boring">                        data[4] = y[1];
-</span><span class="boring">                        data
-</span><span class="boring">                    })
+</span><span class="boring">                    .flat_map(|y| vec![0f64, 0f64, 0f64, y[0], y[1], 0f64])
 </span><span class="boring">                    .collect::&lt;Vec&lt;f64&gt;&gt;()
 </span><span class="boring">            })
+</span><span class="boring">            // Embedding the rigid body motions into the corresponding IO variant
 </span><span class="boring">            .map(|x| vec![jar::MCM2RB6D::io_with(x)])
 </span><span class="boring">    }
 </span><span class="boring">}
@@ -506,21 +506,6 @@ impl Dos for Integrate {
 
         </div>
 
-        
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         
 
         
