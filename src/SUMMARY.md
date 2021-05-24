@@ -9,7 +9,6 @@
  - [Optical Model](optical-model.md)
    - [Installation](optical-model_installation.md)
    - [DOS Interface](optical-model_dos-interface.md)
-   - [Example](optical-model_example.md)
 
  - [Finite Element Model](fem.md)
    - [Installation](fem_installation.md)
