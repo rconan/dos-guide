@@ -1,6 +1,6 @@
-## DOS API
+## DOS Interface
 
-The DOS API is defined in the Rust crate [dosio](https://github.com/rconan/dosio). 
+The DOS Interface is defined in the Rust crate [dosio](https://github.com/rconan/dosio). 
 [`dosio`](https://rconan.github.io/dosio) consists in the enum `IO` with as many variants as there are inputs and outputs to *DOS* and in the trait `Dos`. 
 Every component that needs to be included in a DOS end-to-end model, must implement the `inputs` and `outputs` methods of the `Dos` trait as well as implementing the [`Iterator`](https://doc.rust-lang.org/std/iter/index.html#implementing-iterator) trait.
 The inputs data to the component is passed as an argument to the `inputs` method and the component outputs is returned by the `outputs` method.

@@ -4,10 +4,11 @@
 
  - [Getting Started](ch01-00-getting-started.md)
    - [Installation](ch01-01-installation.md)
-   - [DOS API](ch01-02-dos-api.md)
+   - [DOS Interface](ch01-02-dos-api.md)
 
  - [Optical Model](ch02-00-optical-model.md)
-   - [Installation](ch02-01-installation.md)
+   - [Installation](ch02-00-installation.md)
+   - [DOS Interface](ch02-01-dos-interface.md)
    - [Example](ch02-02-example.md)
 
  - [Finite Element Model](ch03-00-fem.md)
