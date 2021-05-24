@@ -2,18 +2,18 @@
 
 [Introduction](introduction.md)
 
- - [Getting Started](ch01-00-getting-started.md)
-   - [Installation](ch01-01-installation.md)
-   - [DOS Interface](ch01-02-dos-api.md)
+ - [Getting Started](getting-started.md)
+   - [Installation](getting-started_installation.md)
+   - [DOS Interface](getting-started_dos-interface.md)
 
- - [Optical Model](ch02-00-optical-model.md)
-   - [Installation](ch02-00-installation.md)
-   - [DOS Interface](ch02-01-dos-interface.md)
-   - [Example](ch02-02-example.md)
+ - [Optical Model](optical-model.md)
+   - [Installation](optical-model_installation.md)
+   - [DOS Interface](optical-model_dos-interface.md)
+   - [Example](optical-model_example.md)
 
- - [Finite Element Model](ch03-00-fem.md)
-   - [Installation](ch03-01-installation.md)
-   - [Example](ch03-02-example.md)
+ - [Finite Element Model](fem.md)
+   - [Installation](fem_installation.md)
+   - [Example](fem_example.md)
 
  - [Appendix](appendix.md)
    - [IO variants](dos-io-variants.md)
