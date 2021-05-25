@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - DOS Guide</title>
+        <title>Dos Interface - DOS Guide</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started_installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started_dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model_installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model_dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem_installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem_dos-interface.html"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">4.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">4.1.</strong> IO variants</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started_installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started_dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model_installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model_dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem_installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem_dos-interface.html" class="active"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">4.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">4.1.</strong> IO variants</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -167,20 +167,133 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>The <em>Dynamic Optics Simulation</em>, or <em>DOS</em> for short, is the simulation software developed by the Integrated Modeling team of the GMTO project to write the end-to-end models of the Observatory.
-As its core, the <em>DOS</em> provide a software framework to build the necessary interfaces with the many components of the end-to-end model like the <a href="ch01-00-optical-model.html">optical model</a> or the <a href="ch02-00-fem.html">finite element model</a>. 
-The <em>DOS</em> framework also provides all the possible inputs and outputs to the different model components.</p>
-<p>The <em>DOS</em> framework is written in <a href="https://www.rust-lang.org">Rust</a>, the Rust language is a high level zero-cost abstraction language that is well suited for this kind of high performance computing application as, once compiled, and despite beeing a high level language, the runtime execution speed is comparable to what would have given a C or C++ equivalent program.</p>
+                        <h2 id="dos-interface"><a class="header" href="#dos-interface">Dos Interface</a></h2>
+<p>In the following, the FEM is discretized with a 1kHz sampling rate, the modal damping coefficient is set to 2% and the eigen frequencies are truncated at 75Hz.
+Inputs are reduced to the wind loads of the M1 segments and the outputs are the rigid body motions of M1 and M2 segments.</p>
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{io::jar, Dos};
+</span><span class="boring">use fem::{dos::DiscreteStateSpace, FEM};
+</span><span class="boring">use simple_logger::SimpleLogger;
+</span><span class="boring">use std::path::Path;
+</span><span class="boring">use std::time::Instant;
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    SimpleLogger::new().init()?;
+</span>    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+    let sampling_rate = 1e3;
+    let m1_rbm_io = jar::OSSM1Lcl::io();
+    let m2_rbm_io = jar::MCM2RB6D::io();
+    let mut fem = {
+        let fem = FEM::from_pickle(fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;))?;
+        DiscreteStateSpace::from(fem)
+    }
+    .sampling(sampling_rate)
+    .proportional_damping(2. / 100.)
+    .max_eigen_frequency(75.0)
+    .inputs(vec![jar::OSSM1Lcl6F::io()])
+    .outputs(vec![m1_rbm_io.clone(), m2_rbm_io.clone()])
+    .build()?;
+    println!(
+        &quot;Dynamic discrete FEM: {} 2x2 state space model&quot;,
+        fem.state_space.len()
+    );
+<span class="boring">
+</span><span class="boring">    let m1_wind_loads = {
+</span><span class="boring">        let mut u = vec![0f64; 42];
+</span><span class="boring">        u.chunks_mut(6).for_each(|u| u[0] = 100f64);
+</span><span class="boring">        jar::OSSM1Lcl6F::io_with(u)
+</span><span class="boring">    };
+</span><span class="boring">
+</span><span class="boring">    // vector norm
+</span><span class="boring">    let norm = |x: Option&lt;Vec&lt;f64&gt;&gt;| -&gt; f64 {
+</span><span class="boring">        x.as_ref()
+</span><span class="boring">            .unwrap()
+</span><span class="boring">            .iter()
+</span><span class="boring">            .fold(0., |s, &amp;x| s + x * x)
+</span><span class="boring">            .sqrt()
+</span><span class="boring">    };
+</span><span class="boring">
+</span><span class="boring">    let now = Instant::now();
+</span><span class="boring">    println!(&quot;{:^03} {:^8} {:^8}&quot;, &quot;#&quot;, &quot;M1&quot;, &quot;M2&quot;);
+</span><span class="boring">    for k in 0..20 {
+</span><span class="boring">        let y = fem.in_step_out(Some(vec![m1_wind_loads.clone()]))?.unwrap();
+</span><span class="boring">        let m1_rbm = norm((&amp;y[m1_rbm_io.clone()]).into());
+</span><span class="boring">        let m2_rbm = norm((&amp;y[m2_rbm_io.clone()]).into());
+</span><span class="boring">        println!(&quot;{:&lt;03} {:&lt;8.3e} {:&lt;8.3e}&quot;, k, m1_rbm, m2_rbm);
+</span><span class="boring">    }
+</span><span class="boring">    println!(&quot;Elapsed time: {:}ms&quot;, now.elapsed().as_millis());
+</span><span class="boring">
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
+<p>A constant wind pressure is applied to the M1 segments and the norm of the rigid body motion vectors is computed.</p>
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{io::jar, Dos};
+</span><span class="boring">use fem::{dos::DiscreteStateSpace, FEM};
+</span><span class="boring">use simple_logger::SimpleLogger;
+</span><span class="boring">use std::path::Path;
+</span><span class="boring">use std::time::Instant;
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    SimpleLogger::new().init()?;
+</span><span class="boring">    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+</span><span class="boring">    let sampling_rate = 1e3;
+</span><span class="boring">    let m1_rbm_io = jar::OSSM1Lcl::io();
+</span><span class="boring">    let m2_rbm_io = jar::MCM2RB6D::io();
+</span><span class="boring">    let mut fem = {
+</span><span class="boring">        let fem = FEM::from_pickle(fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;))?;
+</span><span class="boring">        DiscreteStateSpace::from(fem)
+</span><span class="boring">    }
+</span><span class="boring">    .sampling(sampling_rate)
+</span><span class="boring">    .proportional_damping(2. / 100.)
+</span><span class="boring">    .max_eigen_frequency(75.0)
+</span><span class="boring">    .inputs(vec![jar::OSSM1Lcl6F::io()])
+</span><span class="boring">    .outputs(vec![m1_rbm_io.clone(), m2_rbm_io.clone()])
+</span><span class="boring">    .build()?;
+</span><span class="boring">    println!(
+</span><span class="boring">        &quot;Dynamic discrete FEM: {} 2x2 state space model&quot;,
+</span><span class="boring">        fem.state_space.len()
+</span><span class="boring">    );
+</span><span class="boring">
+</span><span class="boring">    let m1_wind_loads = {
+</span><span class="boring">        let mut u = vec![0f64; 42];
+</span><span class="boring">        u.chunks_mut(6).for_each(|u| u[0] = 100f64);
+</span><span class="boring">        jar::OSSM1Lcl6F::io_with(u)
+</span><span class="boring">    };
+</span><span class="boring">
+</span>    // vector norm
+    let norm = |x: Option&lt;Vec&lt;f64&gt;&gt;| -&gt; f64 {
+        x.as_ref()
+            .unwrap()
+            .iter()
+            .fold(0., |s, &amp;x| s + x * x)
+            .sqrt()
+    };
+
+    let now = Instant::now();
+    println!(&quot;{:^03} {:^8} {:^8}&quot;, &quot;#&quot;, &quot;M1&quot;, &quot;M2&quot;);
+    for k in 0..20 {
+        let y = fem.in_step_out(Some(vec![m1_wind_loads.clone()]))?.unwrap();
+        let m1_rbm = norm((&amp;y[m1_rbm_io.clone()]).into());
+        let m2_rbm = norm((&amp;y[m2_rbm_io.clone()]).into());
+        println!(&quot;{:&lt;03} {:&lt;8.3e} {:&lt;8.3e}&quot;, k, m1_rbm, m2_rbm);
+    }
+    println!(&quot;Elapsed time: {:}ms&quot;, now.elapsed().as_millis());
+<span class="boring">
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="fem_installation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
                         
-                            <a rel="next" href="getting-started.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="appendix.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -192,9 +305,13 @@ The <em>DOS</em> framework also provides all the possible inputs and outputs to 
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
+                    <a rel="prev" href="fem_installation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
 
                 
-                    <a rel="next" href="getting-started.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="appendix.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
