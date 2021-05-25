@@ -1,0 +1,13 @@
+[package]
+name = "wind-loading_dos-interface"
+version = "0.1.0"
+authors = ["Rod Conan <rconan@gmto.org>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# ANCHOR: depends
+dosio = { git = "https://github.com/rconan/dosio.git", branch = "main" }
+windloading = { git = "https://github.com/rconan/windloading.git", branch = "main" }
+# ANCHOR_END: depends
