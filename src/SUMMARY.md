@@ -12,7 +12,7 @@
 
  - [Finite Element Model](fem.md)
    - [Installation](fem_installation.md)
-   - [Example](fem_example.md)
+   - [Dos Interface](fem_dos-interface.md)
 
  - [Appendix](appendix.md)
    - [IO variants](dos-io-variants.md)

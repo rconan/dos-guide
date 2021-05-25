@@ -1,4 +1,4 @@
-# Installation
+## Installation
 
 CEO compiles only on a machine with a NVIDIA GPU installed and with the CUDA API present. 
 CEO installation steps are given [here](https://github.com/rconan/CEO).
