@@ -10,7 +10,7 @@ A  `GmtOpticalModelInner` structure is created with the [`GmtOpticalModel`](http
 The outputs of the model need to be specified as well, in the following, the model provides 2 outputs: the wavefront error rms and the PSSn are specified.
 
 ```rust,ignore
-{{#rustdoc_include examples/gmt_optical_model/src/main.rs}}
+{{#rustdoc_include ../../examples/optical-model/gmt_optical_model/src/main.rs}}
 ```
 
 ### GMT Optical Sensor Model
@@ -20,5 +20,5 @@ In the following, the optical sensor is based on the [SH48](https://rconan.githu
 The model has a single output: the data from the optical sensor.
 
 ```rust,ignore
-{{#rustdoc_include examples/gmt_optical_sensor_model/src/main.rs}}
+{{#rustdoc_include ../../examples/optical-model/gmt_optical_sensor_model/src/main.rs}}
 ```

@@ -21,21 +21,21 @@ The Cargo command creates a *Cargo.toml* file
 and a *main.rs* file in the *src* directory.
 The *Cargo.toml* contains the package meta-data and an optional list of the project dependencies, which is empty for now:
 ```toml
-{{#include examples/Cargo.toml:original}}
+{{#include ../../examples/getting-started/Cargo.toml:original}}
 ```
 In the *main.rs* file, we add the simple integrator model represented by the `Integrate` structure and implement the `Iterator`  trait for the `Integrate` structure:
 ```rust,ignore
-{{#rustdoc_include examples/src/main.rs:integrator}}
+{{#rustdoc_include ../../examples/getting-started/src/main.rs:integrator}}
 ```
 Next, we add the crate `dosio` as a project dependency:
 ```toml
-{{#include examples/Cargo.toml:all}}
+{{#include ../../examples/getting-started/Cargo.toml:all}}
 ```
 and we implement the `Dos` trait for `Integrate`:
 ```rust,ignore
-{{#rustdoc_include examples/src/main.rs:dos}}
+{{#rustdoc_include ../../examples/getting-started/src/main.rs:dos}}
 ```
 Now we can write the main function:
 ```rust,ignore
-{{#rustdoc_include examples/src/main.rs:main}}
+{{#rustdoc_include ../../examples/getting-started/src/main.rs:main}}
 ```
