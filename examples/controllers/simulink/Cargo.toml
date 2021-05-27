@@ -1,0 +1,17 @@
+[package]
+name = "simulink"
+version = "0.1.0"
+authors = ["Rod Conan <rconan@gmto.org>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# ANCHOR: depends
+dosio = { git = "https://github.com/rconan/dosio.git", branch = "main" }
+fem = { git = "https://github.com/rconan/fem.git", branch = "dos", features = ["dos"] }
+m1-ctrl = { git = "https://github.com/rconan/m1-ctrl.git", branch = "main" }
+mount-ctrl = { git = "https://github.com/rconan/mount-ctrl.git", branch = "main" }
+simple_logger = "1.11.0"
+windloading = { git = "https://github.com/rconan/windloading.git", branch = "main" }
+# ANCHOR_END: depends

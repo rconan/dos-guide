@@ -1,0 +1,13 @@
+# ANCHOR: all
+# ANCHOR: original
+[package]
+name = "ch01-02-dos-api"
+version = "0.1.0"
+authors = ["Rod Conan <rconan@gmto.org>"]
+edition = "2018"
+
+[dependencies]
+# ANCHOR_END: original
+dosio = { git = "https://github.com/rconan/dosio.git", branch = "main" }
+
+# ANCHOR_END: all

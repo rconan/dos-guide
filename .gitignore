@@ -3,3 +3,4 @@ book
 target
 *rustic-mode*
 *data/
+Cargo.lock
