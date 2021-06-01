@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started_installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started_dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model_installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model_dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem_installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem_dos-interface.html"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">4.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">4.1.</strong> IO variants</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started/installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started/dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model/installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model/dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem/installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem/dos-interface.html"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="wind-loading.html"><strong aria-hidden="true">4.</strong> Wind Loading</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="wind-loading/installation.html"><strong aria-hidden="true">4.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="wind-loading/dos-interface.html"><strong aria-hidden="true">4.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="controllers.html"><strong aria-hidden="true">5.</strong> Controllers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="controllers/simulink.html"><strong aria-hidden="true">5.1.</strong> Simulink</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">6.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">6.1.</strong> IO variants</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -174,6 +174,21 @@
 As its core, the <em>DOS</em> provide a software framework to build the necessary interfaces with the many components of the end-to-end model like the <a href="ch01-00-optical-model.html">optical model</a> or the <a href="ch02-00-fem.html">finite element model</a>. 
 The <em>DOS</em> framework also provides all the possible inputs and outputs to the different model components.</p>
 <p>The <em>DOS</em> framework is written in <a href="https://www.rust-lang.org">Rust</a>, the Rust language is a high level zero-cost abstraction language that is well suited for this kind of high performance computing application as, once compiled, and despite beeing a high level language, the runtime execution speed is comparable to what would have given a C or C++ equivalent program.</p>
+<p>A <em>DOS</em> simulation is built from a collection of models, each model is implemented within a different Rust crate.
+In each crate, there is an implementation of the <em>DOS</em> interface that allows the different models to communicate by passing data to each other.</p>
+<p>The models currently available are listed in the table below:</p>
+<table><thead><tr><th>Model</th><th>Crate</th><th>Github</th><th>Doc</th></tr></thead><tbody>
+<tr><td>Optical Model</td><td>crseo</td><td><a href="https://github.com/rconan/crseo"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/crseo"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
+<tr><td>Finite Element Model</td><td>fem</td><td><a href="https://github.com/rconan/fem/tree/dos"><img style="display: inline! important" src="https://img.shields.io/badge/src-dos-green.svg"></img></a></td><td><a href="https://rconan.github.io/fem"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
+<tr><td>Wind Loading</td><td>windloading</td><td><a href="https://github.com/rconan/windloading"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/windloading"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
+<tr><td>Mount Control System</td><td>mount-ctrl</td><td><a href="https://github.com/rconan/mount-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/mount-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-red.svg"></img></a></td></tr>
+<tr><td>M1 Control System</td><td>m1-ctrl</td><td><a href="https://github.com/rconan/m1-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/m1-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-red.svg"></img></a></td></tr>
+</tbody></table>
+<p>In addition to the crates for the models, there are other crates that provide specific interfaces:</p>
+<table><thead><tr><th>Model</th><th>Crate</th><th>Github</th><th>Doc</th></tr></thead><tbody>
+<tr><td>Dos Interface</td><td>dosio</td><td><a href="https://github.com/rconan/dosio"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/dosio"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
+<tr><td>Simulink Interface</td><td>simulink-rs</td><td><a href="https://github.com/rconan/simulink-rs"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/simulink-rs"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
+</tbody></table>
 <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
 <p>To get started with <em>DOS</em>, you need, first, to install Rust and, second, to get familiar with the <em>DOS</em> interface.</p>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
@@ -242,13 +257,12 @@ impl Iterator for Integrate {
 </span><span class="boring">    fn inputs(&amp;mut self, data: Option&lt;Vec&lt;IO&lt;Self::Input&gt;&gt;&gt;) -&gt; Result&lt;&amp;mut Self, DOSIOSError&gt; {
 </span><span class="boring">        self.u = data
 </span><span class="boring">            // Identifying M2 42 segment rigid body motion IO variant
-</span><span class="boring">            .map(|data| {
+</span><span class="boring">            .and_then(|data| {
 </span><span class="boring">                data.into_iter().find_map(|io| match io {
 </span><span class="boring">                    IO::MCM2RB6D { data: value } =&gt; value,
 </span><span class="boring">                    _ =&gt; None,
 </span><span class="boring">                })
 </span><span class="boring">            })
-</span><span class="boring">            .flatten()
 </span><span class="boring">            // Extracting M2 14 Rx and Ry rigid body motions
 </span><span class="boring">            .map(|x| {
 </span><span class="boring">                x.chunks(6)
@@ -342,13 +356,12 @@ impl Dos for Integrate {
     fn inputs(&amp;mut self, data: Option&lt;Vec&lt;IO&lt;Self::Input&gt;&gt;&gt;) -&gt; Result&lt;&amp;mut Self, DOSIOSError&gt; {
         self.u = data
             // Identifying M2 42 segment rigid body motion IO variant
-            .map(|data| {
+            .and_then(|data| {
                 data.into_iter().find_map(|io| match io {
                     IO::MCM2RB6D { data: value } =&gt; value,
                     _ =&gt; None,
                 })
             })
-            .flatten()
             // Extracting M2 14 Rx and Ry rigid body motions
             .map(|x| {
                 x.chunks(6)
@@ -431,13 +444,12 @@ impl Dos for Integrate {
 </span><span class="boring">    fn inputs(&amp;mut self, data: Option&lt;Vec&lt;IO&lt;Self::Input&gt;&gt;&gt;) -&gt; Result&lt;&amp;mut Self, DOSIOSError&gt; {
 </span><span class="boring">        self.u = data
 </span><span class="boring">            // Identifying M2 42 segment rigid body motion IO variant
-</span><span class="boring">            .map(|data| {
+</span><span class="boring">            .and_then(|data| {
 </span><span class="boring">                data.into_iter().find_map(|io| match io {
 </span><span class="boring">                    IO::MCM2RB6D { data: value } =&gt; value,
 </span><span class="boring">                    _ =&gt; None,
 </span><span class="boring">                })
 </span><span class="boring">            })
-</span><span class="boring">            .flatten()
 </span><span class="boring">            // Extracting M2 14 Rx and Ry rigid body motions
 </span><span class="boring">            .map(|x| {
 </span><span class="boring">                x.chunks(6)
@@ -669,8 +681,350 @@ Inputs are reduced to the wind loads of the M1 segments and the outputs are the 
 </span><span class="boring">    Ok(())
 </span><span class="boring">}
 </span></code></pre>
+<h1 id="wind-loading"><a class="header" href="#wind-loading">Wind Loading</a></h1>
+<p>The <a href="https://github.com/rconan/windloading">windloading</a> crate loads the time series of forces and moments computed with the CFD simulations and allocates them to different <code>IO</code> enum variants of the <em>Dos</em> interface. 
+The wind loads can be applied on the following components of the FEM:</p>
+<ul>
+<li>the top-end,</li>
+<li>the M2 ASMs top-end,</li>
+<li>the M2 segments,</li>
+<li>the M2 ASMs reference bodies,</li>
+<li>the trusses,</li>
+<li>the M1 segments,</li>
+<li>the M1 cells,</li>
+<li>the GIR,</li>
+<li>the C-Ring.</li>
+</ul>
+<h2 id="installation-3"><a class="header" href="#installation-3">Installation</a></h2>
+<p>Both the crates <code>dosio</code> and <code>windloading</code> needs to be added to the dependencies list in the <em>Cargo.toml</em> file of your project.</p>
+<pre><code class="language-toml">dosio = { git = &quot;https://github.com/rconan/dosio.git&quot;, branch = &quot;main&quot; }
+windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, branch = &quot;main&quot; }
+</code></pre>
+<h2 id="dos-interface-3"><a class="header" href="#dos-interface-3">Dos Interface</a></h2>
+<p>From one CFD case, the wind loads time series are resampled to the sampling rate of a <em>Dos</em> simulation and saved into a Pickle file to be re-played later.
+The wind loads are then loaded into the simulation and the wind loads to use with the simulation are selected according to the telescope structural component they are applied to.</p>
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{Dos, IOTags};
+</span><span class="boring">use std::path::Path;
+</span><span class="boring">use std::time::Instant;
+</span><span class="boring">use windloading::WindLoads;
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span>    println!(&quot;Loading the wind loads ...&quot;);
+    let now = Instant::now();
+    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+    let mut wind_loading = WindLoads::from_pickle(
+        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+    )?
+    .range(0.0, 20.0)
+    .truss()?
+    .m2_asm_topend()?
+    .m1_segments()?
+    .m1_cell()?
+    .m2_asm_reference_bodies()?
+    .build()?;
+    println!(&quot;Wind loads loaded in {}ms&quot;, now.elapsed().as_millis());
+    println!(&quot;wind loads outputs: {:#?}&quot;, wind_loading.outputs_tags());
+<span class="boring">    println!(&quot;Playing the wind loads ...&quot;);
+</span><span class="boring">    let now = Instant::now();
+</span><span class="boring">    while let Some(_fem_forces) = wind_loading.outputs() {}
+</span><span class="boring">    println!(
+</span><span class="boring">        &quot;{} sample wind loads played in {}ms&quot;,
+</span><span class="boring">        wind_loading.n_sample,
+</span><span class="boring">        now.elapsed().as_millis()
+</span><span class="boring">    );
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
+<p>The <a href="https://rconan.github.io/windloading"><code>windloading</code></a> crate implements only the <code>outputs</code> method of the <em>Dos</em> interface stepping through the time series of forces and moments at each call and returning <code>None</code> when the range limit has been reached.</p>
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{Dos, IOTags};
+</span><span class="boring">use std::path::Path;
+</span><span class="boring">use std::time::Instant;
+</span><span class="boring">use windloading::WindLoads;
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    println!(&quot;Loading the wind loads ...&quot;);
+</span><span class="boring">    let now = Instant::now();
+</span><span class="boring">    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+</span><span class="boring">    let mut wind_loading = WindLoads::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+</span><span class="boring">    )?
+</span><span class="boring">    .range(0.0, 20.0)
+</span><span class="boring">    .truss()?
+</span><span class="boring">    .m2_asm_topend()?
+</span><span class="boring">    .m1_segments()?
+</span><span class="boring">    .m1_cell()?
+</span><span class="boring">    .m2_asm_reference_bodies()?
+</span><span class="boring">    .build()?;
+</span><span class="boring">    println!(&quot;Wind loads loaded in {}ms&quot;, now.elapsed().as_millis());
+</span><span class="boring">    println!(&quot;wind loads outputs: {:#?}&quot;, wind_loading.outputs_tags());
+</span>    println!(&quot;Playing the wind loads ...&quot;);
+    let now = Instant::now();
+    while let Some(_fem_forces) = wind_loading.outputs() {}
+    println!(
+        &quot;{} sample wind loads played in {}ms&quot;,
+        wind_loading.n_sample,
+        now.elapsed().as_millis()
+    );
+<span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
+<h1 id="controllers"><a class="header" href="#controllers">Controllers</a></h1>
+<p>The GMT has multiple controllers connecting sensors and actuators distributed across the telescope.
+From a programming perspective, there are 2 categories of controllers:</p>
+<ul>
+<li>controllers that are implemented using Simulink, converted to C and binded to Rust,</li>
+<li>and controllers that are implemented directly in Rust.</li>
+</ul>
+<h2 id="simulink"><a class="header" href="#simulink">Simulink</a></h2>
+<p>For the controllers that are implemented with Simulink, the crate <a href="https://github.com/rconan/simulink-rs.git">simulink-rs</a> provides <a href="https://rconan.github.io/simulink-rs">macros</a> to define the Rust binding interface to the C conversions of the Simulink controllers.</p>
+<p>Using the <code>simulink-rs</code> crate, the following GMT controllers have been implemented in Rust and each of them also implements the <em>Dos</em> interface: </p>
+<ul>
+<li>the GMT <a href="https://github.com/rconan/mount-ctrl.git">mount control system</a>.</li>
+<li>the GMT <a href="https://github.com/rconan/m1-ctrl.git">M1 control system</a>.</li>
+</ul>
+<p>In the following model example, we combine together the FEM, the wind loads and both the mount and M1 control systems.</p>
+<p>The model starts by adding the crates 
+<a href="https://github.com/rconan/dosio.git">dosio</a>,
+<a href="https://github.com/rconan/fem.git">fem</a>,
+<a href="https://github.com/rconan/m1-ctrl.git">m1-ctrl</a>,
+<a href="https://github.com/rconan/mount-ctrl.git">mount-ctrl</a> and
+<a href="https://github.com/rconan/windloading.git">windloading</a>
+to the list of dependencies in <em>Cargo.toml</em>.</p>
+<pre><code class="language-toml">dosio = { git = &quot;https://github.com/rconan/dosio.git&quot;, branch = &quot;main&quot; }
+fem = { git = &quot;https://github.com/rconan/fem.git&quot;, branch = &quot;dos&quot;, features = [&quot;dos&quot;] }
+m1-ctrl = { git = &quot;https://github.com/rconan/m1-ctrl.git&quot;, branch = &quot;main&quot; }
+mount-ctrl = { git = &quot;https://github.com/rconan/mount-ctrl.git&quot;, branch = &quot;main&quot; }
+simple_logger = &quot;1.11.0&quot;
+windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, branch = &quot;main&quot; }
+</code></pre>
+<p>Then the model is laid out in <em>src/main.rs</em> with</p>
+<ul>
+<li>the FEM, sampled at 1kHz, with a 2% proportionnal damping coefficient and a maximum eigen fequency of 75Hz; the inputs are the windloads and the mount drives; the outputs are the mount encoders, M1 hardpoints and M1 and M2 rigid body motions:</li>
+</ul>
+<pre><code class="language-rust ignore">    let sampling_rate = 1e3;
+   let m1_rbm = OSSM1Lcl::io();
+   let m2_rbm = MCM2RB6D::io();
+   let tic = Timer::tic();
+   println!(&quot;Building FEM dynamic model...&quot;);
+   let mut fem = DiscreteStateSpace::from(FEM::from_pickle(
+       fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;),
+   )?)
+   .dump_eigen_frequencies(fem_data_path.join(&quot;eigen_frequencies.pkl&quot;))
+   .sampling(sampling_rate)
+   .proportional_damping(2. / 100.)
+   .max_eigen_frequency(75.0)
+   .inputs_from(&amp;wind_loading)
+   .inputs_from(&amp;mnt_drives)
+   .outputs(vec![m1_rbm, m2_rbm])
+   .outputs(vec![
+       OSSAzEncoderAngle::io(),
+       OSSElEncoderAngle::io(),
+       OSSRotEncoderAngle::io(),
+   ])
+   .outputs(vec![OSSHardpointD::io()])
+   .build()?;
+</code></pre>
+<ul>
+<li>the 1st 20s of wind loads on the top-end, the truss, M1 segment, M1 cells and M1 ASM reference bodies:</li>
+</ul>
+<pre><code class="language-rust ignore">    println!(&quot;Loading wind loads ...&quot;);
+   let mut wind_loading = WindLoads::from_pickle(
+       fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+   )?
+   .range(0.0, 20.0)
+   .truss()?
+   .m2_asm_topend()?
+   .m1_segments()?
+   .m1_cell()?
+   .m2_asm_reference_bodies()?
+   .build()?;
+</code></pre>
+<ul>
+<li>the 2 parts mount controller with the mount control that takes the mount encoder FEM outputs and transform them into mount drive commands with is combined with the encoder data and converted by the mount drive model into mount drive torques applied to the FEM:</li>
+</ul>
+<pre><code class="language-rust ignore">    let mut mnt_drives = mount::drives::Controller::new();
+   let mut mnt_ctrl = mount::controller::Controller::new();
+</code></pre>
+<ul>
+<li>the 2 parts M1 controller with the M1 load cells model that combines the M1 hardpoint commands with the FEM hardpoint displacement output to produce the M1 load cell to hardpoint command for the M1 CG controller that computes M1 CG force and moments applied to both FEM inputs of the M1 segment and cells:</li>
+</ul>
+<pre><code class="language-rust ignore">    let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
+   let mut m1_ctrl = m1::cg_controller::Controller::new();
+</code></pre>
+<p>Finally, the dynamic simulation is implemented such as wind loads are applied to the FEM of the telescope with the feedback loop controller between the mount 3 rotational axes drives and encoders and between M1 segments hardpoints and center of gravity:</p>
+<pre><code class="language-rust ignore">    let mut mount_drives_forces = Some(vec![
+       OSSAzDriveTorque::io_with(vec![0f64; 12]),
+       OSSElDriveTorque::io_with(vec![0f64; 4]),
+       OSSRotDriveTorque::io_with(vec![0f64; 4]),
+   ]);
+   let mut m1_cg_fm: Option&lt;Vec&lt;IO&lt;Vec&lt;f64&gt;&gt;&gt;&gt; = None;
+   let mut k = 0;
+   while let Some(mut fem_forces) = wind_loading.outputs() {
+       // FEM
+       mount_drives_forces.as_mut().map(|x| {
+           fem_forces.append(x);
+       });
+       m1_cg_fm.as_ref().map(|x| {
+           fem_forces[OSSM1Lcl6F::io()] += &amp;x[0];
+           fem_forces[OSSCellLcl6F::io()] -= &amp;x[0];
+       });
+       let fem_outputs = fem
+           .in_step_out(Some(fem_forces))?
+           .ok_or(&quot;FEM output is empty&quot;)?;
+       // MOUNT CONTROLLER &amp; DRIVES
+       let mount_encoders = &amp;fem_outputs[2..5];
+       mount_drives_forces = mnt_ctrl
+           .in_step_out(Some(mount_encoders.to_vec()))?
+           .map(|mut x| {
+               x.extend_from_slice(mount_encoders);
+               mnt_drives.in_step_out(Some(x))
+           })
+           .unwrap()?;
+       // M1 HARDPOINT &amp; CG CONTROLLER
+       if k % 10 == 0 {
+           let mut m1_hp = vec![M1HPCmd::io_with(vec![0f64; 42])];
+           m1_hp.extend_from_slice(&amp;[fem_outputs[OSSHardpointD::io::&lt;()&gt;()].clone()]);
+           m1_cg_fm = m1_ctrl.in_step_out(m1_hardpoints.in_step_out(Some(m1_hp))?)?;
+       }
+       k += 1;
+   }
+</code></pre>
 <h1 id="appendix"><a class="header" href="#appendix">Appendix</a></h1>
 <h1 id="io-variants"><a class="header" href="#io-variants">IO variants</a></h1>
+<pre><code class="language-rust ignore">    // Uniform Wind Pressure
+    OSSTopEnd6F,  // Top-End
+    MCM2Lcl6F,    // M2 segments
+    OSSTruss6F,   //Truss
+    OSSM1Lcl6F,   // M1 segments
+    OSSCellLcl6F, // M1 segment cells
+    OSSGIR6F,     // GIR
+    OSSCRING6F,   // C-rings
+    // Axial wind forces on M1 mirror segments
+    M1DistributedWindf,
+    // Axial displacement of M1 segment surface nodes
+    M1Segment1AxialD,
+    M1Segment2AxialD,
+    M1Segment3AxialD,
+    M1Segment4AxialD,
+    M1Segment5AxialD,
+    M1Segment6AxialD,
+    M1Segment7AxialD,
+    // M1 hardpoints
+    OSSHarpointDeltaF, // forces
+    OSSHardpointD,     // displacements
+    // M1 Actuators forces applied to back-side of M1 segments
+    M1ActuatorsSegment1,
+    M1ActuatorsSegment2,
+    M1ActuatorsSegment3,
+    M1ActuatorsSegment4,
+    M1actuatorsSegment5,
+    M1actuatorsSegment6,
+    M1ActuatorsSegment7,
+    // M1 fans
+    OSSM1FansLcl6F,
+    OSSM1FansLcl6D,
+    // Payloads
+    OSSPayloads6F,
+    OSSPayloads6D,
+    // Mount Drives
+    OSSAzDriveF,  // azimuth drive
+    OSSElDriveF,  // elevation drive
+    OSSGIRDriveF, // GIR drive
+    OSSAzDriveD,
+    OSSElDriveD,
+    OSSGIRDriveD,
+    // Mount Drives
+    OSSAzDriveTorque,
+    OSSElDriveTorque,
+    OSSRotDriveTorque,
+    OSSAzEncoderAngle,
+    OSSElEncoderAngle,
+    OSSRotEncoderAngle,
+    // Azimuth, elevation, rotation drive torques
+    SlewTorques,
+    // Line of sight
+    OSSM1LOS,  // M1
+    MCM2LOS6D, // M2
+    // Base of Pier
+    OSSBASE6F,
+    // Inertial Measurement Units
+    OSSIMUs6d,
+    // M2 Positioners
+    MCM2SmHexF,
+    // ASM Proof Mass Actuators
+    MCM2PMA1F,
+    // ASM
+    MCM2CP6F,  // Cold plates
+    MCM2RB6F,  // Reference bodies
+    MCM2CP6D,  // Cold plates
+    MCM2RB6D,  // Reference bodies
+    MCM2Lcl6D, // Face sheets
+    MCASMCOG6F,
+    MCASMCOG6D,
+    //
+    MCM2TE6F,
+    MCM2TEIF6F,
+    OSSTrussTEIF6f,
+    MCM2GravCS0,
+    MCM2PZTS1F,
+    MCM2PZTS2F,
+    MCM2PZTS3F,
+    MCM2PZTS4F,
+    MCM2PZTS5F,
+    MCM2PZTS6F,
+    MCM2PZTS7F,
+    MCM2SmallS16F,
+    MCM2SmallS26F,
+    MCM2SmallS36F,
+    MCM2SmallS46F,
+    MCM2SmallS56F,
+    MCM2SmallS66F,
+    MCM2SmallS76F,
+    OSSGravCS0,
+    OSSTrussIF6D,
+    OSSGIR6D,
+    OSSCRING6D,
+    OSSBASE6D,
+    OSSM1Lcl,
+    OSSTruss6d,
+    OSSCellLcl,
+    MCM2SmallS16D,
+    MCM2PZTS1D,
+    MCM2SmallS26D,
+    MCM2PZTS2D,
+    MCM2SmallS36D,
+    MCM2PZTS3D,
+    MCM2SmallS46D,
+    MCM2PZTS4D,
+    MCM2SmallS56D,
+    MCM2PZTS5D,
+    MCM2SmallS66D,
+    MCM2PZTS6D,
+    MCM2SmallS76D,
+    MCM2PZTS7D,
+    M1SurfacesD,
+    M1EdgeSensors,
+    MCM2CP1D,
+    MCM2SmHexD,
+    M2edgesensors,
+    MCM2TEIF6D,
+    MCM2TE6D,
+    M2ReferenceBody1AxialD,
+    M2ReferenceBody2AxialD,
+    M2ReferenceBody3AxialD,
+    M2ReferenceBody4AxialD,
+    M2ReferenceBody5AxialD,
+    M2ReferenceBody6AxialD,
+    M2ReferenceBody7AxialD,
+    MountCmd,
+    // M1 control
+    M1HPCmd,
+    M1HPLC,
+    M1CGFM,
+    SensorData,
+    SrcWfeRms,
+    Pssn
+</code></pre>
 
                     </main>
 

@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Simulink - DOS Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="GMT Dynamic Optics Simulation User Guide">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting-started/installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../getting-started/dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="../optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../optical-model/installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../optical-model/dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="../fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../fem/installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../fem/dos-interface.html"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="../wind-loading.html"><strong aria-hidden="true">4.</strong> Wind Loading</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../wind-loading/installation.html"><strong aria-hidden="true">4.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../wind-loading/dos-interface.html"><strong aria-hidden="true">4.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="../controllers.html"><strong aria-hidden="true">5.</strong> Controllers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../controllers/simulink.html" class="active"><strong aria-hidden="true">5.1.</strong> Simulink</a></li></ol></li><li class="chapter-item expanded "><a href="../appendix.html"><strong aria-hidden="true">6.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../dos-io-variants.html"><strong aria-hidden="true">6.1.</strong> IO variants</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">DOS Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rconan/dos-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="simulink"><a class="header" href="#simulink">Simulink</a></h2>
+<p>For the controllers that are implemented with Simulink, the crate <a href="https://github.com/rconan/simulink-rs.git">simulink-rs</a> provides <a href="https://rconan.github.io/simulink-rs">macros</a> to define the Rust binding interface to the C conversions of the Simulink controllers.</p>
+<p>Using the <code>simulink-rs</code> crate, the following GMT controllers have been implemented in Rust and each of them also implements the <em>Dos</em> interface: </p>
+<ul>
+<li>the GMT <a href="https://github.com/rconan/mount-ctrl.git">mount control system</a>.</li>
+<li>the GMT <a href="https://github.com/rconan/m1-ctrl.git">M1 control system</a>.</li>
+</ul>
+<p>In the following model example, we combine together the FEM, the wind loads and both the mount and M1 control systems.</p>
+<p>The model starts by adding the crates 
+<a href="https://github.com/rconan/dosio.git">dosio</a>,
+<a href="https://github.com/rconan/fem.git">fem</a>,
+<a href="https://github.com/rconan/m1-ctrl.git">m1-ctrl</a>,
+<a href="https://github.com/rconan/mount-ctrl.git">mount-ctrl</a> and
+<a href="https://github.com/rconan/windloading.git">windloading</a>
+to the list of dependencies in <em>Cargo.toml</em>.</p>
+<pre><code class="language-toml">dosio = { git = &quot;https://github.com/rconan/dosio.git&quot;, branch = &quot;main&quot; }
+fem = { git = &quot;https://github.com/rconan/fem.git&quot;, branch = &quot;dos&quot;, features = [&quot;dos&quot;] }
+m1-ctrl = { git = &quot;https://github.com/rconan/m1-ctrl.git&quot;, branch = &quot;main&quot; }
+mount-ctrl = { git = &quot;https://github.com/rconan/mount-ctrl.git&quot;, branch = &quot;main&quot; }
+simple_logger = &quot;1.11.0&quot;
+windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, branch = &quot;main&quot; }
+</code></pre>
+<p>Then the model is laid out in <em>src/main.rs</em> with</p>
+<ul>
+<li>the FEM, sampled at 1kHz, with a 2% proportionnal damping coefficient and a maximum eigen fequency of 75Hz; the inputs are the windloads and the mount drives; the outputs are the mount encoders, M1 hardpoints and M1 and M2 rigid body motions:</li>
+</ul>
+<pre><code class="language-rust ignore">    let sampling_rate = 1e3;
+   let m1_rbm = OSSM1Lcl::io();
+   let m2_rbm = MCM2RB6D::io();
+   let tic = Timer::tic();
+   println!(&quot;Building FEM dynamic model...&quot;);
+   let mut fem = DiscreteStateSpace::from(FEM::from_pickle(
+       fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;),
+   )?)
+   .dump_eigen_frequencies(fem_data_path.join(&quot;eigen_frequencies.pkl&quot;))
+   .sampling(sampling_rate)
+   .proportional_damping(2. / 100.)
+   .max_eigen_frequency(75.0)
+   .inputs_from(&amp;wind_loading)
+   .inputs_from(&amp;mnt_drives)
+   .outputs(vec![m1_rbm, m2_rbm])
+   .outputs(vec![
+       OSSAzEncoderAngle::io(),
+       OSSElEncoderAngle::io(),
+       OSSRotEncoderAngle::io(),
+   ])
+   .outputs(vec![OSSHardpointD::io()])
+   .build()?;
+</code></pre>
+<ul>
+<li>the 1st 20s of wind loads on the top-end, the truss, M1 segment, M1 cells and M1 ASM reference bodies:</li>
+</ul>
+<pre><code class="language-rust ignore">    println!(&quot;Loading wind loads ...&quot;);
+   let mut wind_loading = WindLoads::from_pickle(
+       fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+   )?
+   .range(0.0, 20.0)
+   .truss()?
+   .m2_asm_topend()?
+   .m1_segments()?
+   .m1_cell()?
+   .m2_asm_reference_bodies()?
+   .build()?;
+</code></pre>
+<ul>
+<li>the 2 parts mount controller with the mount control that takes the mount encoder FEM outputs and transform them into mount drive commands with is combined with the encoder data and converted by the mount drive model into mount drive torques applied to the FEM:</li>
+</ul>
+<pre><code class="language-rust ignore">    let mut mnt_drives = mount::drives::Controller::new();
+   let mut mnt_ctrl = mount::controller::Controller::new();
+</code></pre>
+<ul>
+<li>the 2 parts M1 controller with the M1 load cells model that combines the M1 hardpoint commands with the FEM hardpoint displacement output to produce the M1 load cell to hardpoint command for the M1 CG controller that computes M1 CG force and moments applied to both FEM inputs of the M1 segment and cells:</li>
+</ul>
+<pre><code class="language-rust ignore">    let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
+   let mut m1_ctrl = m1::cg_controller::Controller::new();
+</code></pre>
+<p>Finally, the dynamic simulation is implemented such as wind loads are applied to the FEM of the telescope with the feedback loop controller between the mount 3 rotational axes drives and encoders and between M1 segments hardpoints and center of gravity:</p>
+<pre><code class="language-rust ignore">    let mut mount_drives_forces = Some(vec![
+       OSSAzDriveTorque::io_with(vec![0f64; 12]),
+       OSSElDriveTorque::io_with(vec![0f64; 4]),
+       OSSRotDriveTorque::io_with(vec![0f64; 4]),
+   ]);
+   let mut m1_cg_fm: Option&lt;Vec&lt;IO&lt;Vec&lt;f64&gt;&gt;&gt;&gt; = None;
+   let mut k = 0;
+   while let Some(mut fem_forces) = wind_loading.outputs() {
+       // FEM
+       mount_drives_forces.as_mut().map(|x| {
+           fem_forces.append(x);
+       });
+       m1_cg_fm.as_ref().map(|x| {
+           fem_forces[OSSM1Lcl6F::io()] += &amp;x[0];
+           fem_forces[OSSCellLcl6F::io()] -= &amp;x[0];
+       });
+       let fem_outputs = fem
+           .in_step_out(Some(fem_forces))?
+           .ok_or(&quot;FEM output is empty&quot;)?;
+       // MOUNT CONTROLLER &amp; DRIVES
+       let mount_encoders = &amp;fem_outputs[2..5];
+       mount_drives_forces = mnt_ctrl
+           .in_step_out(Some(mount_encoders.to_vec()))?
+           .map(|mut x| {
+               x.extend_from_slice(mount_encoders);
+               mnt_drives.in_step_out(Some(x))
+           })
+           .unwrap()?;
+       // M1 HARDPOINT &amp; CG CONTROLLER
+       if k % 10 == 0 {
+           let mut m1_hp = vec![M1HPCmd::io_with(vec![0f64; 42])];
+           m1_hp.extend_from_slice(&amp;[fem_outputs[OSSHardpointD::io::&lt;()&gt;()].clone()]);
+           m1_cg_fm = m1_ctrl.in_step_out(m1_hardpoints.in_step_out(Some(m1_hp))?)?;
+       }
+       k += 1;
+   }
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../controllers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../appendix.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../controllers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../appendix.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Installation - DOS Guide</title>
+        <title>Controllers - DOS Guide</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started_installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started_dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model_installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model_dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem_installation.html" class="active"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem_dos-interface.html"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">4.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">4.1.</strong> IO variants</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started/installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started/dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model/installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model/dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem/installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem/dos-interface.html"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="wind-loading.html"><strong aria-hidden="true">4.</strong> Wind Loading</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="wind-loading/installation.html"><strong aria-hidden="true">4.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="wind-loading/dos-interface.html"><strong aria-hidden="true">4.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="controllers.html" class="active"><strong aria-hidden="true">5.</strong> Controllers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="controllers/simulink.html"><strong aria-hidden="true">5.1.</strong> Simulink</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">6.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">6.1.</strong> IO variants</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -167,25 +167,26 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<p>Both the crates <code>dosio</code> and <code>fem</code> needs to be added to the dependencies list in the <em>Cargo.toml</em> file of your project, the features <em>dos</em> of the <code>fem</code> is required to compile the <em>Dos</em> interface.</p>
-<pre><code class="language-toml">dosio = { git = &quot;https://github.com/rconan/dosio.git&quot;, branch = &quot;main&quot; }
-fem = { path = &quot;/home/rconan/projects/fem&quot;, features = [&quot;dos&quot;] }
-simple_logger = &quot;1.11.0&quot;
-</code></pre>
+                        <h1 id="controllers"><a class="header" href="#controllers">Controllers</a></h1>
+<p>The GMT has multiple controllers connecting sensors and actuators distributed across the telescope.
+From a programming perspective, there are 2 categories of controllers:</p>
+<ul>
+<li>controllers that are implemented using Simulink, converted to C and binded to Rust,</li>
+<li>and controllers that are implemented directly in Rust.</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="fem.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="wind-loading/dos-interface.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="fem_dos-interface.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="controllers/simulink.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -197,13 +198,13 @@ simple_logger = &quot;1.11.0&quot;
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="fem.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="wind-loading/dos-interface.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="fem_dos-interface.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="controllers/simulink.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

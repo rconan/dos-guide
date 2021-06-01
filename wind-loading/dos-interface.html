@@ -18,28 +18,28 @@
         <meta name="theme-color" content="#ffffff" />
 
         
-        <link rel="icon" href="favicon.svg">
+        <link rel="icon" href="../favicon.svg">
         
         
-        <link rel="shortcut icon" href="favicon.png">
+        <link rel="shortcut icon" href="../favicon.png">
         
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
         
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="stylesheet" href="../css/print.css" media="print">
         
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
         
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
         
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -49,7 +49,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started_installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started_dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model_installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model_dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem_installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem_dos-interface.html" class="active"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">4.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">4.1.</strong> IO variants</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../getting-started/installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../getting-started/dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="../optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../optical-model/installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../optical-model/dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="../fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../fem/installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../fem/dos-interface.html"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="../wind-loading.html"><strong aria-hidden="true">4.</strong> Wind Loading</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../wind-loading/installation.html"><strong aria-hidden="true">4.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../wind-loading/dos-interface.html" class="active"><strong aria-hidden="true">4.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="../controllers.html"><strong aria-hidden="true">5.</strong> Controllers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../controllers/simulink.html"><strong aria-hidden="true">5.1.</strong> Simulink</a></li></ol></li><li class="chapter-item expanded "><a href="../appendix.html"><strong aria-hidden="true">6.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../dos-io-variants.html"><strong aria-hidden="true">6.1.</strong> IO variants</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -131,7 +131,7 @@
 
                     <div class="right-buttons">
                         
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
@@ -168,117 +168,71 @@
                 <div id="content" class="content">
                     <main>
                         <h2 id="dos-interface"><a class="header" href="#dos-interface">Dos Interface</a></h2>
-<p>In the following, the FEM is discretized with a 1kHz sampling rate, the modal damping coefficient is set to 2% and the eigen frequencies are truncated at 75Hz.
-Inputs are reduced to the wind loads of the M1 segments and the outputs are the rigid body motions of M1 and M2 segments.</p>
-<pre><code class="language-rust ignore"><span class="boring">use dosio::{io::jar, Dos};
-</span><span class="boring">use fem::{dos::DiscreteStateSpace, FEM};
-</span><span class="boring">use simple_logger::SimpleLogger;
+<p>From one CFD case, the wind loads time series are resampled to the sampling rate of a <em>Dos</em> simulation and saved into a Pickle file to be re-played later.
+The wind loads are then loaded into the simulation and the wind loads to use with the simulation are selected according to the telescope structural component they are applied to.</p>
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{Dos, IOTags};
 </span><span class="boring">use std::path::Path;
 </span><span class="boring">use std::time::Instant;
+</span><span class="boring">use windloading::WindLoads;
 </span><span class="boring">
 </span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-</span><span class="boring">    SimpleLogger::new().init()?;
-</span>    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
-    let sampling_rate = 1e3;
-    let m1_rbm_io = jar::OSSM1Lcl::io();
-    let m2_rbm_io = jar::MCM2RB6D::io();
-    let mut fem = {
-        let fem = FEM::from_pickle(fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;))?;
-        DiscreteStateSpace::from(fem)
-    }
-    .sampling(sampling_rate)
-    .proportional_damping(2. / 100.)
-    .max_eigen_frequency(75.0)
-    .inputs(vec![jar::OSSM1Lcl6F::io()])
-    .outputs(vec![m1_rbm_io.clone(), m2_rbm_io.clone()])
+</span>    println!(&quot;Loading the wind loads ...&quot;);
+    let now = Instant::now();
+    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+    let mut wind_loading = WindLoads::from_pickle(
+        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+    )?
+    .range(0.0, 20.0)
+    .truss()?
+    .m2_asm_topend()?
+    .m1_segments()?
+    .m1_cell()?
+    .m2_asm_reference_bodies()?
     .build()?;
-    println!(
-        &quot;Dynamic discrete FEM: {} 2x2 state space model&quot;,
-        fem.state_space.len()
-    );
-<span class="boring">
-</span><span class="boring">    let m1_wind_loads = {
-</span><span class="boring">        let mut u = vec![0f64; 42];
-</span><span class="boring">        u.chunks_mut(6).for_each(|u| u[0] = 100f64);
-</span><span class="boring">        jar::OSSM1Lcl6F::io_with(u)
-</span><span class="boring">    };
-</span><span class="boring">
-</span><span class="boring">    // vector norm
-</span><span class="boring">    let norm = |x: Option&lt;Vec&lt;f64&gt;&gt;| -&gt; f64 {
-</span><span class="boring">        x.as_ref()
-</span><span class="boring">            .unwrap()
-</span><span class="boring">            .iter()
-</span><span class="boring">            .fold(0., |s, &amp;x| s + x * x)
-</span><span class="boring">            .sqrt()
-</span><span class="boring">    };
-</span><span class="boring">
+    println!(&quot;Wind loads loaded in {}ms&quot;, now.elapsed().as_millis());
+    println!(&quot;wind loads outputs: {:#?}&quot;, wind_loading.outputs_tags());
+<span class="boring">    println!(&quot;Playing the wind loads ...&quot;);
 </span><span class="boring">    let now = Instant::now();
-</span><span class="boring">    println!(&quot;{:^03} {:^8} {:^8}&quot;, &quot;#&quot;, &quot;M1&quot;, &quot;M2&quot;);
-</span><span class="boring">    for k in 0..20 {
-</span><span class="boring">        let y = fem.in_step_out(Some(vec![m1_wind_loads.clone()]))?.unwrap();
-</span><span class="boring">        let m1_rbm = norm((&amp;y[m1_rbm_io.clone()]).into());
-</span><span class="boring">        let m2_rbm = norm((&amp;y[m2_rbm_io.clone()]).into());
-</span><span class="boring">        println!(&quot;{:&lt;03} {:&lt;8.3e} {:&lt;8.3e}&quot;, k, m1_rbm, m2_rbm);
-</span><span class="boring">    }
-</span><span class="boring">    println!(&quot;Elapsed time: {:}ms&quot;, now.elapsed().as_millis());
-</span><span class="boring">
+</span><span class="boring">    while let Some(_fem_forces) = wind_loading.outputs() {}
+</span><span class="boring">    println!(
+</span><span class="boring">        &quot;{} sample wind loads played in {}ms&quot;,
+</span><span class="boring">        wind_loading.n_sample,
+</span><span class="boring">        now.elapsed().as_millis()
+</span><span class="boring">    );
 </span><span class="boring">    Ok(())
 </span><span class="boring">}
 </span></code></pre>
-<p>A constant wind pressure is applied to the M1 segments and the norm of the rigid body motion vectors is computed.</p>
-<pre><code class="language-rust ignore"><span class="boring">use dosio::{io::jar, Dos};
-</span><span class="boring">use fem::{dos::DiscreteStateSpace, FEM};
-</span><span class="boring">use simple_logger::SimpleLogger;
+<p>The <a href="https://rconan.github.io/windloading"><code>windloading</code></a> crate implements only the <code>outputs</code> method of the <em>Dos</em> interface stepping through the time series of forces and moments at each call and returning <code>None</code> when the range limit has been reached.</p>
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{Dos, IOTags};
 </span><span class="boring">use std::path::Path;
 </span><span class="boring">use std::time::Instant;
+</span><span class="boring">use windloading::WindLoads;
 </span><span class="boring">
 </span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-</span><span class="boring">    SimpleLogger::new().init()?;
+</span><span class="boring">    println!(&quot;Loading the wind loads ...&quot;);
+</span><span class="boring">    let now = Instant::now();
 </span><span class="boring">    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
-</span><span class="boring">    let sampling_rate = 1e3;
-</span><span class="boring">    let m1_rbm_io = jar::OSSM1Lcl::io();
-</span><span class="boring">    let m2_rbm_io = jar::MCM2RB6D::io();
-</span><span class="boring">    let mut fem = {
-</span><span class="boring">        let fem = FEM::from_pickle(fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;))?;
-</span><span class="boring">        DiscreteStateSpace::from(fem)
-</span><span class="boring">    }
-</span><span class="boring">    .sampling(sampling_rate)
-</span><span class="boring">    .proportional_damping(2. / 100.)
-</span><span class="boring">    .max_eigen_frequency(75.0)
-</span><span class="boring">    .inputs(vec![jar::OSSM1Lcl6F::io()])
-</span><span class="boring">    .outputs(vec![m1_rbm_io.clone(), m2_rbm_io.clone()])
+</span><span class="boring">    let mut wind_loading = WindLoads::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+</span><span class="boring">    )?
+</span><span class="boring">    .range(0.0, 20.0)
+</span><span class="boring">    .truss()?
+</span><span class="boring">    .m2_asm_topend()?
+</span><span class="boring">    .m1_segments()?
+</span><span class="boring">    .m1_cell()?
+</span><span class="boring">    .m2_asm_reference_bodies()?
 </span><span class="boring">    .build()?;
-</span><span class="boring">    println!(
-</span><span class="boring">        &quot;Dynamic discrete FEM: {} 2x2 state space model&quot;,
-</span><span class="boring">        fem.state_space.len()
-</span><span class="boring">    );
-</span><span class="boring">
-</span><span class="boring">    let m1_wind_loads = {
-</span><span class="boring">        let mut u = vec![0f64; 42];
-</span><span class="boring">        u.chunks_mut(6).for_each(|u| u[0] = 100f64);
-</span><span class="boring">        jar::OSSM1Lcl6F::io_with(u)
-</span><span class="boring">    };
-</span><span class="boring">
-</span>    // vector norm
-    let norm = |x: Option&lt;Vec&lt;f64&gt;&gt;| -&gt; f64 {
-        x.as_ref()
-            .unwrap()
-            .iter()
-            .fold(0., |s, &amp;x| s + x * x)
-            .sqrt()
-    };
-
+</span><span class="boring">    println!(&quot;Wind loads loaded in {}ms&quot;, now.elapsed().as_millis());
+</span><span class="boring">    println!(&quot;wind loads outputs: {:#?}&quot;, wind_loading.outputs_tags());
+</span>    println!(&quot;Playing the wind loads ...&quot;);
     let now = Instant::now();
-    println!(&quot;{:^03} {:^8} {:^8}&quot;, &quot;#&quot;, &quot;M1&quot;, &quot;M2&quot;);
-    for k in 0..20 {
-        let y = fem.in_step_out(Some(vec![m1_wind_loads.clone()]))?.unwrap();
-        let m1_rbm = norm((&amp;y[m1_rbm_io.clone()]).into());
-        let m2_rbm = norm((&amp;y[m2_rbm_io.clone()]).into());
-        println!(&quot;{:&lt;03} {:&lt;8.3e} {:&lt;8.3e}&quot;, k, m1_rbm, m2_rbm);
-    }
-    println!(&quot;Elapsed time: {:}ms&quot;, now.elapsed().as_millis());
-<span class="boring">
-</span><span class="boring">    Ok(())
+    while let Some(_fem_forces) = wind_loading.outputs() {}
+    println!(
+        &quot;{} sample wind loads played in {}ms&quot;,
+        wind_loading.n_sample,
+        now.elapsed().as_millis()
+    );
+<span class="boring">    Ok(())
 </span><span class="boring">}
 </span></code></pre>
 
@@ -287,13 +241,13 @@ Inputs are reduced to the wind loads of the M1 segments and the outputs are the 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="fem_installation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../wind-loading/installation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="appendix.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../controllers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -305,13 +259,13 @@ Inputs are reduced to the wind loads of the M1 segments and the outputs are the 
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="fem_installation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../wind-loading/installation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="appendix.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../controllers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
@@ -334,14 +288,14 @@ Inputs are reduced to the wind loads of the M1 segments and the outputs are the 
         
 
         
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         

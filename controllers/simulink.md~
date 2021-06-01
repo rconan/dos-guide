@@ -1,0 +1,3 @@
+## Simulink
+
+For the controllers that are implemented with Simulink, the crate [simulink-rs](https://github.com/rconan/simulink-rs.git) provides macros to define the Rust binding interface to the C conversions of the Simulink controllers.
