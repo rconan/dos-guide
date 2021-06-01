@@ -501,11 +501,11 @@ A Rust binding for CEO is provided by the crate <a href="https://github.com/rcon
 <h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
 <p>CEO compiles only on a machine with a NVIDIA GPU installed and with the CUDA API present. 
 CEO installation steps are given <a href="https://github.com/rconan/CEO">here</a>.</p>
-<p>CEO bindings crate <code>crseo</code>, needs to be added to the dependencies list in the <em>Cargo.toml</em> file of your project, both the <code>dosio</code> crate and the dosio feature of <code>crseo</code> are required in order to compile the <em>Dos</em> interface:</p>
+<p>CEO bindings crate <code>crseo</code>, needs to be added to the dependencies list in the <em>Cargo.toml</em> file of your project, both the <code>dosio</code> crate and the <code>dos</code> feature of <code>crseo</code> are required in order to compile the <em>Dos</em> interface:</p>
 <pre><code class="language-toml">dosio = { git = &quot;https://github.com/rconan/dosio.git&quot;, branch = &quot;main&quot; }
 # should be the git url, but with the git repo, CEO does not compile? 
-crseo = { path = &quot;/home/rconan/projects/crseo&quot; , features = [&quot;dosio&quot;]}
-#crseo = { git = &quot;https://github.com/rconan/crseo.git&quot;, branch = &quot;main&quot;, features = [&quot;dosio&quot;] }
+crseo = { path = &quot;/home/rconan/projects/crseo&quot; , features = [&quot;dos&quot;]}
+#crseo = { git = &quot;https://github.com/rconan/crseo.git&quot;, branch = &quot;main&quot;, features = [&quot;dos&quot;] }
 </code></pre>
 <h2 id="dos-interface-1"><a class="header" href="#dos-interface-1">DOS Interface</a></h2>
 <p>The <em>DOS</em> interface for the optical model is implemented for 2 structures: <code>GmtOpticalModelInner</code> and <code>GmtOpticalSensorModelInner</code>.
@@ -801,7 +801,63 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
 <ul>
 <li>the FEM, sampled at 1kHz, with a 2% proportionnal damping coefficient and a maximum eigen fequency of 75Hz; the inputs are the windloads and the mount drives; the outputs are the mount encoders, M1 hardpoints and M1 and M2 rigid body motions:</li>
 </ul>
-<pre><code class="language-rust ignore">    let sampling_rate = 1e3;
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{io::jar::*, io::IO, Dos};
+</span><span class="boring">use fem::{dos::DiscreteStateSpace, FEM};
+</span><span class="boring">use m1_ctrl as m1;
+</span><span class="boring">use mount_ctrl as mount;
+</span><span class="boring">//use serde_pickle as pkl;
+</span><span class="boring">use simple_logger::SimpleLogger;
+</span><span class="boring">use windloading::WindLoads;
+</span><span class="boring">//use std::error::Error;
+</span><span class="boring">use std::path::Path;
+</span><span class="boring">use std::time::Instant;
+</span><span class="boring">//use std::{fs::File, io::Error};
+</span><span class="boring">
+</span><span class="boring">struct Timer {
+</span><span class="boring">    time: Instant,
+</span><span class="boring">}
+</span><span class="boring">impl Timer {
+</span><span class="boring">    pub fn tic() -&gt; Self {
+</span><span class="boring">        Self {
+</span><span class="boring">            time: Instant::now(),
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">    pub fn toc(self) -&gt; f64 {
+</span><span class="boring">        self.time.elapsed().as_secs_f64()
+</span><span class="boring">    }
+</span><span class="boring">    pub fn print_toc(self) {
+</span><span class="boring">        println!(&quot;... in {:3}s&quot;, self.toc());
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    SimpleLogger::new().init().unwrap();
+</span><span class="boring">    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+</span><span class="boring">    // WIND LOADS
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    println!(&quot;Loading wind loads ...&quot;);
+</span><span class="boring">    let mut wind_loading = WindLoads::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+</span><span class="boring">    )?
+</span><span class="boring">    .range(0.0, 20.0)
+</span><span class="boring">    .truss()?
+</span><span class="boring">    .m2_asm_topend()?
+</span><span class="boring">    .m1_segments()?
+</span><span class="boring">    .m1_cell()?
+</span><span class="boring">    .m2_asm_reference_bodies()?
+</span><span class="boring">    .build()?;
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // MOUNT CONTROL
+</span><span class="boring">    let mut mnt_drives = mount::drives::Controller::new();
+</span><span class="boring">    let mut mnt_ctrl = mount::controller::Controller::new();
+</span><span class="boring">
+</span><span class="boring">    // M1
+</span><span class="boring">    let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
+</span><span class="boring">    let mut m1_ctrl = m1::cg_controller::Controller::new();
+</span><span class="boring">
+</span><span class="boring">    // FEM
+</span>   let sampling_rate = 1e3;
    let m1_rbm = OSSM1Lcl::io();
    let m2_rbm = MCM2RB6D::io();
    let tic = Timer::tic();
@@ -823,11 +879,119 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
    ])
    .outputs(vec![OSSHardpointD::io()])
    .build()?;
-</code></pre>
+<span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    /*let mut data = DataLogging::new()
+</span><span class="boring">    .sampling_rate(sampling_rate)
+</span><span class="boring">    //.key(m1_rbm.clone())
+</span><span class="boring">    //.key(m2_rbm.clone())
+</span><span class="boring">    .build();*/
+</span><span class="boring">
+</span><span class="boring">    // FEEDBACK LOOP
+</span><span class="boring">    println!(&quot;Running model ...&quot;);
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    let mut mount_drives_forces = Some(vec![
+</span><span class="boring">        OSSAzDriveTorque::io_with(vec![0f64; 12]),
+</span><span class="boring">        OSSElDriveTorque::io_with(vec![0f64; 4]),
+</span><span class="boring">        OSSRotDriveTorque::io_with(vec![0f64; 4]),
+</span><span class="boring">    ]);
+</span><span class="boring">    let mut m1_cg_fm: Option&lt;Vec&lt;IO&lt;Vec&lt;f64&gt;&gt;&gt;&gt; = None;
+</span><span class="boring">    let mut k = 0;
+</span><span class="boring">    while let Some(mut fem_forces) = wind_loading.outputs() {
+</span><span class="boring">        // FEM
+</span><span class="boring">        mount_drives_forces.as_mut().map(|x| {
+</span><span class="boring">            fem_forces.append(x);
+</span><span class="boring">        });
+</span><span class="boring">        m1_cg_fm.as_ref().map(|x| {
+</span><span class="boring">            fem_forces[OSSM1Lcl6F::io()] += &amp;x[0];
+</span><span class="boring">            fem_forces[OSSCellLcl6F::io()] -= &amp;x[0];
+</span><span class="boring">        });
+</span><span class="boring">        let fem_outputs = fem
+</span><span class="boring">            .in_step_out(Some(fem_forces))?
+</span><span class="boring">            .ok_or(&quot;FEM output is empty&quot;)?;
+</span><span class="boring">        // MOUNT CONTROLLER &amp; DRIVES
+</span><span class="boring">        let mount_encoders = &amp;fem_outputs[2..5];
+</span><span class="boring">        mount_drives_forces = mnt_ctrl
+</span><span class="boring">            .in_step_out(Some(mount_encoders.to_vec()))?
+</span><span class="boring">            .map(|mut x| {
+</span><span class="boring">                x.extend_from_slice(mount_encoders);
+</span><span class="boring">                mnt_drives.in_step_out(Some(x))
+</span><span class="boring">            })
+</span><span class="boring">            .unwrap()?;
+</span><span class="boring">        // M1 HARDPOINT &amp; CG CONTROLLER
+</span><span class="boring">        if k % 10 == 0 {
+</span><span class="boring">            let mut m1_hp = vec![M1HPCmd::io_with(vec![0f64; 42])];
+</span><span class="boring">            m1_hp.extend_from_slice(&amp;[fem_outputs[OSSHardpointD::io::&lt;()&gt;()].clone()]);
+</span><span class="boring">            m1_cg_fm = m1_ctrl.in_step_out(m1_hardpoints.in_step_out(Some(m1_hp))?)?;
+</span><span class="boring">        }
+</span><span class="boring">        k += 1;
+</span><span class="boring">    }
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    //data.step()?;
+</span><span class="boring">    //data.log(&amp;fem_outputs[0])?.log(&amp;fem_outputs[1])?;
+</span><span class="boring">    /*
+</span><span class="boring">    // OUTPUTS SAVING
+</span><span class="boring">    let mut f = File::create(fem_data_path.join(&quot;mount_control.data.pkl&quot;)).unwrap();
+</span><span class="boring">    pkl::to_writer(
+</span><span class="boring">        &amp;mut f,
+</span><span class="boring">        &amp;[
+</span><span class="boring">            data.time_series(m1_rbm),
+</span><span class="boring">            data.time_series(m2_rbm),
+</span><span class="boring">            //data.time_series(M1HPLC::new()),
+</span><span class="boring">            //data.time_series(M1CGFM::new()),
+</span><span class="boring">            //data.time_series(OSSAzEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSElEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSRotEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(MountCmd::new()),
+</span><span class="boring">        ],
+</span><span class="boring">        true,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">     */
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
 <ul>
 <li>the 1st 20s of wind loads on the top-end, the truss, M1 segment, M1 cells and M1 ASM reference bodies:</li>
 </ul>
-<pre><code class="language-rust ignore">    println!(&quot;Loading wind loads ...&quot;);
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{io::jar::*, io::IO, Dos};
+</span><span class="boring">use fem::{dos::DiscreteStateSpace, FEM};
+</span><span class="boring">use m1_ctrl as m1;
+</span><span class="boring">use mount_ctrl as mount;
+</span><span class="boring">//use serde_pickle as pkl;
+</span><span class="boring">use simple_logger::SimpleLogger;
+</span><span class="boring">use windloading::WindLoads;
+</span><span class="boring">//use std::error::Error;
+</span><span class="boring">use std::path::Path;
+</span><span class="boring">use std::time::Instant;
+</span><span class="boring">//use std::{fs::File, io::Error};
+</span><span class="boring">
+</span><span class="boring">struct Timer {
+</span><span class="boring">    time: Instant,
+</span><span class="boring">}
+</span><span class="boring">impl Timer {
+</span><span class="boring">    pub fn tic() -&gt; Self {
+</span><span class="boring">        Self {
+</span><span class="boring">            time: Instant::now(),
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">    pub fn toc(self) -&gt; f64 {
+</span><span class="boring">        self.time.elapsed().as_secs_f64()
+</span><span class="boring">    }
+</span><span class="boring">    pub fn print_toc(self) {
+</span><span class="boring">        println!(&quot;... in {:3}s&quot;, self.toc());
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    SimpleLogger::new().init().unwrap();
+</span><span class="boring">    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+</span><span class="boring">    // WIND LOADS
+</span><span class="boring">    let tic = Timer::tic();
+</span>   println!(&quot;Loading wind loads ...&quot;);
    let mut wind_loading = WindLoads::from_pickle(
        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
    )?
@@ -838,21 +1002,518 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
    .m1_cell()?
    .m2_asm_reference_bodies()?
    .build()?;
-</code></pre>
+<span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // MOUNT CONTROL
+</span><span class="boring">    let mut mnt_drives = mount::drives::Controller::new();
+</span><span class="boring">    let mut mnt_ctrl = mount::controller::Controller::new();
+</span><span class="boring">
+</span><span class="boring">    // M1
+</span><span class="boring">    let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
+</span><span class="boring">    let mut m1_ctrl = m1::cg_controller::Controller::new();
+</span><span class="boring">
+</span><span class="boring">    // FEM
+</span><span class="boring">    let sampling_rate = 1e3;
+</span><span class="boring">    let m1_rbm = OSSM1Lcl::io();
+</span><span class="boring">    let m2_rbm = MCM2RB6D::io();
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    println!(&quot;Building FEM dynamic model...&quot;);
+</span><span class="boring">    let mut fem = DiscreteStateSpace::from(FEM::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;),
+</span><span class="boring">    )?)
+</span><span class="boring">    .dump_eigen_frequencies(fem_data_path.join(&quot;eigen_frequencies.pkl&quot;))
+</span><span class="boring">    .sampling(sampling_rate)
+</span><span class="boring">    .proportional_damping(2. / 100.)
+</span><span class="boring">    .max_eigen_frequency(75.0)
+</span><span class="boring">    .inputs_from(&amp;wind_loading)
+</span><span class="boring">    .inputs_from(&amp;mnt_drives)
+</span><span class="boring">    .outputs(vec![m1_rbm, m2_rbm])
+</span><span class="boring">    .outputs(vec![
+</span><span class="boring">        OSSAzEncoderAngle::io(),
+</span><span class="boring">        OSSElEncoderAngle::io(),
+</span><span class="boring">        OSSRotEncoderAngle::io(),
+</span><span class="boring">    ])
+</span><span class="boring">    .outputs(vec![OSSHardpointD::io()])
+</span><span class="boring">    .build()?;
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    /*let mut data = DataLogging::new()
+</span><span class="boring">    .sampling_rate(sampling_rate)
+</span><span class="boring">    //.key(m1_rbm.clone())
+</span><span class="boring">    //.key(m2_rbm.clone())
+</span><span class="boring">    .build();*/
+</span><span class="boring">
+</span><span class="boring">    // FEEDBACK LOOP
+</span><span class="boring">    println!(&quot;Running model ...&quot;);
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    let mut mount_drives_forces = Some(vec![
+</span><span class="boring">        OSSAzDriveTorque::io_with(vec![0f64; 12]),
+</span><span class="boring">        OSSElDriveTorque::io_with(vec![0f64; 4]),
+</span><span class="boring">        OSSRotDriveTorque::io_with(vec![0f64; 4]),
+</span><span class="boring">    ]);
+</span><span class="boring">    let mut m1_cg_fm: Option&lt;Vec&lt;IO&lt;Vec&lt;f64&gt;&gt;&gt;&gt; = None;
+</span><span class="boring">    let mut k = 0;
+</span><span class="boring">    while let Some(mut fem_forces) = wind_loading.outputs() {
+</span><span class="boring">        // FEM
+</span><span class="boring">        mount_drives_forces.as_mut().map(|x| {
+</span><span class="boring">            fem_forces.append(x);
+</span><span class="boring">        });
+</span><span class="boring">        m1_cg_fm.as_ref().map(|x| {
+</span><span class="boring">            fem_forces[OSSM1Lcl6F::io()] += &amp;x[0];
+</span><span class="boring">            fem_forces[OSSCellLcl6F::io()] -= &amp;x[0];
+</span><span class="boring">        });
+</span><span class="boring">        let fem_outputs = fem
+</span><span class="boring">            .in_step_out(Some(fem_forces))?
+</span><span class="boring">            .ok_or(&quot;FEM output is empty&quot;)?;
+</span><span class="boring">        // MOUNT CONTROLLER &amp; DRIVES
+</span><span class="boring">        let mount_encoders = &amp;fem_outputs[2..5];
+</span><span class="boring">        mount_drives_forces = mnt_ctrl
+</span><span class="boring">            .in_step_out(Some(mount_encoders.to_vec()))?
+</span><span class="boring">            .map(|mut x| {
+</span><span class="boring">                x.extend_from_slice(mount_encoders);
+</span><span class="boring">                mnt_drives.in_step_out(Some(x))
+</span><span class="boring">            })
+</span><span class="boring">            .unwrap()?;
+</span><span class="boring">        // M1 HARDPOINT &amp; CG CONTROLLER
+</span><span class="boring">        if k % 10 == 0 {
+</span><span class="boring">            let mut m1_hp = vec![M1HPCmd::io_with(vec![0f64; 42])];
+</span><span class="boring">            m1_hp.extend_from_slice(&amp;[fem_outputs[OSSHardpointD::io::&lt;()&gt;()].clone()]);
+</span><span class="boring">            m1_cg_fm = m1_ctrl.in_step_out(m1_hardpoints.in_step_out(Some(m1_hp))?)?;
+</span><span class="boring">        }
+</span><span class="boring">        k += 1;
+</span><span class="boring">    }
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    //data.step()?;
+</span><span class="boring">    //data.log(&amp;fem_outputs[0])?.log(&amp;fem_outputs[1])?;
+</span><span class="boring">    /*
+</span><span class="boring">    // OUTPUTS SAVING
+</span><span class="boring">    let mut f = File::create(fem_data_path.join(&quot;mount_control.data.pkl&quot;)).unwrap();
+</span><span class="boring">    pkl::to_writer(
+</span><span class="boring">        &amp;mut f,
+</span><span class="boring">        &amp;[
+</span><span class="boring">            data.time_series(m1_rbm),
+</span><span class="boring">            data.time_series(m2_rbm),
+</span><span class="boring">            //data.time_series(M1HPLC::new()),
+</span><span class="boring">            //data.time_series(M1CGFM::new()),
+</span><span class="boring">            //data.time_series(OSSAzEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSElEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSRotEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(MountCmd::new()),
+</span><span class="boring">        ],
+</span><span class="boring">        true,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">     */
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
 <ul>
-<li>the 2 parts mount controller with the mount control that takes the mount encoder FEM outputs and transform them into mount drive commands with is combined with the encoder data and converted by the mount drive model into mount drive torques applied to the FEM:</li>
+<li>the 2 parts mount controller with the mount control that takes the mount encoder FEM outputs and transform them into mount drive commands which is combined with the encoder data and converted by the mount drive model into mount drive torques applied to the FEM:</li>
 </ul>
-<pre><code class="language-rust ignore">    let mut mnt_drives = mount::drives::Controller::new();
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{io::jar::*, io::IO, Dos};
+</span><span class="boring">use fem::{dos::DiscreteStateSpace, FEM};
+</span><span class="boring">use m1_ctrl as m1;
+</span><span class="boring">use mount_ctrl as mount;
+</span><span class="boring">//use serde_pickle as pkl;
+</span><span class="boring">use simple_logger::SimpleLogger;
+</span><span class="boring">use windloading::WindLoads;
+</span><span class="boring">//use std::error::Error;
+</span><span class="boring">use std::path::Path;
+</span><span class="boring">use std::time::Instant;
+</span><span class="boring">//use std::{fs::File, io::Error};
+</span><span class="boring">
+</span><span class="boring">struct Timer {
+</span><span class="boring">    time: Instant,
+</span><span class="boring">}
+</span><span class="boring">impl Timer {
+</span><span class="boring">    pub fn tic() -&gt; Self {
+</span><span class="boring">        Self {
+</span><span class="boring">            time: Instant::now(),
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">    pub fn toc(self) -&gt; f64 {
+</span><span class="boring">        self.time.elapsed().as_secs_f64()
+</span><span class="boring">    }
+</span><span class="boring">    pub fn print_toc(self) {
+</span><span class="boring">        println!(&quot;... in {:3}s&quot;, self.toc());
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    SimpleLogger::new().init().unwrap();
+</span><span class="boring">    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+</span><span class="boring">    // WIND LOADS
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    println!(&quot;Loading wind loads ...&quot;);
+</span><span class="boring">    let mut wind_loading = WindLoads::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+</span><span class="boring">    )?
+</span><span class="boring">    .range(0.0, 20.0)
+</span><span class="boring">    .truss()?
+</span><span class="boring">    .m2_asm_topend()?
+</span><span class="boring">    .m1_segments()?
+</span><span class="boring">    .m1_cell()?
+</span><span class="boring">    .m2_asm_reference_bodies()?
+</span><span class="boring">    .build()?;
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // MOUNT CONTROL
+</span>   let mut mnt_drives = mount::drives::Controller::new();
    let mut mnt_ctrl = mount::controller::Controller::new();
-</code></pre>
+<span class="boring">
+</span><span class="boring">    // M1
+</span><span class="boring">    let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
+</span><span class="boring">    let mut m1_ctrl = m1::cg_controller::Controller::new();
+</span><span class="boring">
+</span><span class="boring">    // FEM
+</span><span class="boring">    let sampling_rate = 1e3;
+</span><span class="boring">    let m1_rbm = OSSM1Lcl::io();
+</span><span class="boring">    let m2_rbm = MCM2RB6D::io();
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    println!(&quot;Building FEM dynamic model...&quot;);
+</span><span class="boring">    let mut fem = DiscreteStateSpace::from(FEM::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;),
+</span><span class="boring">    )?)
+</span><span class="boring">    .dump_eigen_frequencies(fem_data_path.join(&quot;eigen_frequencies.pkl&quot;))
+</span><span class="boring">    .sampling(sampling_rate)
+</span><span class="boring">    .proportional_damping(2. / 100.)
+</span><span class="boring">    .max_eigen_frequency(75.0)
+</span><span class="boring">    .inputs_from(&amp;wind_loading)
+</span><span class="boring">    .inputs_from(&amp;mnt_drives)
+</span><span class="boring">    .outputs(vec![m1_rbm, m2_rbm])
+</span><span class="boring">    .outputs(vec![
+</span><span class="boring">        OSSAzEncoderAngle::io(),
+</span><span class="boring">        OSSElEncoderAngle::io(),
+</span><span class="boring">        OSSRotEncoderAngle::io(),
+</span><span class="boring">    ])
+</span><span class="boring">    .outputs(vec![OSSHardpointD::io()])
+</span><span class="boring">    .build()?;
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    /*let mut data = DataLogging::new()
+</span><span class="boring">    .sampling_rate(sampling_rate)
+</span><span class="boring">    //.key(m1_rbm.clone())
+</span><span class="boring">    //.key(m2_rbm.clone())
+</span><span class="boring">    .build();*/
+</span><span class="boring">
+</span><span class="boring">    // FEEDBACK LOOP
+</span><span class="boring">    println!(&quot;Running model ...&quot;);
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    let mut mount_drives_forces = Some(vec![
+</span><span class="boring">        OSSAzDriveTorque::io_with(vec![0f64; 12]),
+</span><span class="boring">        OSSElDriveTorque::io_with(vec![0f64; 4]),
+</span><span class="boring">        OSSRotDriveTorque::io_with(vec![0f64; 4]),
+</span><span class="boring">    ]);
+</span><span class="boring">    let mut m1_cg_fm: Option&lt;Vec&lt;IO&lt;Vec&lt;f64&gt;&gt;&gt;&gt; = None;
+</span><span class="boring">    let mut k = 0;
+</span><span class="boring">    while let Some(mut fem_forces) = wind_loading.outputs() {
+</span><span class="boring">        // FEM
+</span><span class="boring">        mount_drives_forces.as_mut().map(|x| {
+</span><span class="boring">            fem_forces.append(x);
+</span><span class="boring">        });
+</span><span class="boring">        m1_cg_fm.as_ref().map(|x| {
+</span><span class="boring">            fem_forces[OSSM1Lcl6F::io()] += &amp;x[0];
+</span><span class="boring">            fem_forces[OSSCellLcl6F::io()] -= &amp;x[0];
+</span><span class="boring">        });
+</span><span class="boring">        let fem_outputs = fem
+</span><span class="boring">            .in_step_out(Some(fem_forces))?
+</span><span class="boring">            .ok_or(&quot;FEM output is empty&quot;)?;
+</span><span class="boring">        // MOUNT CONTROLLER &amp; DRIVES
+</span><span class="boring">        let mount_encoders = &amp;fem_outputs[2..5];
+</span><span class="boring">        mount_drives_forces = mnt_ctrl
+</span><span class="boring">            .in_step_out(Some(mount_encoders.to_vec()))?
+</span><span class="boring">            .map(|mut x| {
+</span><span class="boring">                x.extend_from_slice(mount_encoders);
+</span><span class="boring">                mnt_drives.in_step_out(Some(x))
+</span><span class="boring">            })
+</span><span class="boring">            .unwrap()?;
+</span><span class="boring">        // M1 HARDPOINT &amp; CG CONTROLLER
+</span><span class="boring">        if k % 10 == 0 {
+</span><span class="boring">            let mut m1_hp = vec![M1HPCmd::io_with(vec![0f64; 42])];
+</span><span class="boring">            m1_hp.extend_from_slice(&amp;[fem_outputs[OSSHardpointD::io::&lt;()&gt;()].clone()]);
+</span><span class="boring">            m1_cg_fm = m1_ctrl.in_step_out(m1_hardpoints.in_step_out(Some(m1_hp))?)?;
+</span><span class="boring">        }
+</span><span class="boring">        k += 1;
+</span><span class="boring">    }
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    //data.step()?;
+</span><span class="boring">    //data.log(&amp;fem_outputs[0])?.log(&amp;fem_outputs[1])?;
+</span><span class="boring">    /*
+</span><span class="boring">    // OUTPUTS SAVING
+</span><span class="boring">    let mut f = File::create(fem_data_path.join(&quot;mount_control.data.pkl&quot;)).unwrap();
+</span><span class="boring">    pkl::to_writer(
+</span><span class="boring">        &amp;mut f,
+</span><span class="boring">        &amp;[
+</span><span class="boring">            data.time_series(m1_rbm),
+</span><span class="boring">            data.time_series(m2_rbm),
+</span><span class="boring">            //data.time_series(M1HPLC::new()),
+</span><span class="boring">            //data.time_series(M1CGFM::new()),
+</span><span class="boring">            //data.time_series(OSSAzEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSElEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSRotEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(MountCmd::new()),
+</span><span class="boring">        ],
+</span><span class="boring">        true,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">     */
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
 <ul>
-<li>the 2 parts M1 controller with the M1 load cells model that combines the M1 hardpoint commands with the FEM hardpoint displacement output to produce the M1 load cell to hardpoint command for the M1 CG controller that computes M1 CG force and moments applied to both FEM inputs of the M1 segment and cells:</li>
+<li>the 2 parts M1 controller with the M1 load cells model that combines the M1 hardpoint commands with the FEM hardpoint displacement output to produce the M1 load cell to hardpoint command for the M1 CG controller that computes M1 CG force and moments applied to both FEM inputs of the M1 segments and cells:</li>
 </ul>
-<pre><code class="language-rust ignore">    let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{io::jar::*, io::IO, Dos};
+</span><span class="boring">use fem::{dos::DiscreteStateSpace, FEM};
+</span><span class="boring">use m1_ctrl as m1;
+</span><span class="boring">use mount_ctrl as mount;
+</span><span class="boring">//use serde_pickle as pkl;
+</span><span class="boring">use simple_logger::SimpleLogger;
+</span><span class="boring">use windloading::WindLoads;
+</span><span class="boring">//use std::error::Error;
+</span><span class="boring">use std::path::Path;
+</span><span class="boring">use std::time::Instant;
+</span><span class="boring">//use std::{fs::File, io::Error};
+</span><span class="boring">
+</span><span class="boring">struct Timer {
+</span><span class="boring">    time: Instant,
+</span><span class="boring">}
+</span><span class="boring">impl Timer {
+</span><span class="boring">    pub fn tic() -&gt; Self {
+</span><span class="boring">        Self {
+</span><span class="boring">            time: Instant::now(),
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">    pub fn toc(self) -&gt; f64 {
+</span><span class="boring">        self.time.elapsed().as_secs_f64()
+</span><span class="boring">    }
+</span><span class="boring">    pub fn print_toc(self) {
+</span><span class="boring">        println!(&quot;... in {:3}s&quot;, self.toc());
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    SimpleLogger::new().init().unwrap();
+</span><span class="boring">    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+</span><span class="boring">    // WIND LOADS
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    println!(&quot;Loading wind loads ...&quot;);
+</span><span class="boring">    let mut wind_loading = WindLoads::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+</span><span class="boring">    )?
+</span><span class="boring">    .range(0.0, 20.0)
+</span><span class="boring">    .truss()?
+</span><span class="boring">    .m2_asm_topend()?
+</span><span class="boring">    .m1_segments()?
+</span><span class="boring">    .m1_cell()?
+</span><span class="boring">    .m2_asm_reference_bodies()?
+</span><span class="boring">    .build()?;
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // MOUNT CONTROL
+</span><span class="boring">    let mut mnt_drives = mount::drives::Controller::new();
+</span><span class="boring">    let mut mnt_ctrl = mount::controller::Controller::new();
+</span><span class="boring">
+</span><span class="boring">    // M1
+</span>   let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
    let mut m1_ctrl = m1::cg_controller::Controller::new();
-</code></pre>
+<span class="boring">
+</span><span class="boring">    // FEM
+</span><span class="boring">    let sampling_rate = 1e3;
+</span><span class="boring">    let m1_rbm = OSSM1Lcl::io();
+</span><span class="boring">    let m2_rbm = MCM2RB6D::io();
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    println!(&quot;Building FEM dynamic model...&quot;);
+</span><span class="boring">    let mut fem = DiscreteStateSpace::from(FEM::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;),
+</span><span class="boring">    )?)
+</span><span class="boring">    .dump_eigen_frequencies(fem_data_path.join(&quot;eigen_frequencies.pkl&quot;))
+</span><span class="boring">    .sampling(sampling_rate)
+</span><span class="boring">    .proportional_damping(2. / 100.)
+</span><span class="boring">    .max_eigen_frequency(75.0)
+</span><span class="boring">    .inputs_from(&amp;wind_loading)
+</span><span class="boring">    .inputs_from(&amp;mnt_drives)
+</span><span class="boring">    .outputs(vec![m1_rbm, m2_rbm])
+</span><span class="boring">    .outputs(vec![
+</span><span class="boring">        OSSAzEncoderAngle::io(),
+</span><span class="boring">        OSSElEncoderAngle::io(),
+</span><span class="boring">        OSSRotEncoderAngle::io(),
+</span><span class="boring">    ])
+</span><span class="boring">    .outputs(vec![OSSHardpointD::io()])
+</span><span class="boring">    .build()?;
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    /*let mut data = DataLogging::new()
+</span><span class="boring">    .sampling_rate(sampling_rate)
+</span><span class="boring">    //.key(m1_rbm.clone())
+</span><span class="boring">    //.key(m2_rbm.clone())
+</span><span class="boring">    .build();*/
+</span><span class="boring">
+</span><span class="boring">    // FEEDBACK LOOP
+</span><span class="boring">    println!(&quot;Running model ...&quot;);
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    let mut mount_drives_forces = Some(vec![
+</span><span class="boring">        OSSAzDriveTorque::io_with(vec![0f64; 12]),
+</span><span class="boring">        OSSElDriveTorque::io_with(vec![0f64; 4]),
+</span><span class="boring">        OSSRotDriveTorque::io_with(vec![0f64; 4]),
+</span><span class="boring">    ]);
+</span><span class="boring">    let mut m1_cg_fm: Option&lt;Vec&lt;IO&lt;Vec&lt;f64&gt;&gt;&gt;&gt; = None;
+</span><span class="boring">    let mut k = 0;
+</span><span class="boring">    while let Some(mut fem_forces) = wind_loading.outputs() {
+</span><span class="boring">        // FEM
+</span><span class="boring">        mount_drives_forces.as_mut().map(|x| {
+</span><span class="boring">            fem_forces.append(x);
+</span><span class="boring">        });
+</span><span class="boring">        m1_cg_fm.as_ref().map(|x| {
+</span><span class="boring">            fem_forces[OSSM1Lcl6F::io()] += &amp;x[0];
+</span><span class="boring">            fem_forces[OSSCellLcl6F::io()] -= &amp;x[0];
+</span><span class="boring">        });
+</span><span class="boring">        let fem_outputs = fem
+</span><span class="boring">            .in_step_out(Some(fem_forces))?
+</span><span class="boring">            .ok_or(&quot;FEM output is empty&quot;)?;
+</span><span class="boring">        // MOUNT CONTROLLER &amp; DRIVES
+</span><span class="boring">        let mount_encoders = &amp;fem_outputs[2..5];
+</span><span class="boring">        mount_drives_forces = mnt_ctrl
+</span><span class="boring">            .in_step_out(Some(mount_encoders.to_vec()))?
+</span><span class="boring">            .map(|mut x| {
+</span><span class="boring">                x.extend_from_slice(mount_encoders);
+</span><span class="boring">                mnt_drives.in_step_out(Some(x))
+</span><span class="boring">            })
+</span><span class="boring">            .unwrap()?;
+</span><span class="boring">        // M1 HARDPOINT &amp; CG CONTROLLER
+</span><span class="boring">        if k % 10 == 0 {
+</span><span class="boring">            let mut m1_hp = vec![M1HPCmd::io_with(vec![0f64; 42])];
+</span><span class="boring">            m1_hp.extend_from_slice(&amp;[fem_outputs[OSSHardpointD::io::&lt;()&gt;()].clone()]);
+</span><span class="boring">            m1_cg_fm = m1_ctrl.in_step_out(m1_hardpoints.in_step_out(Some(m1_hp))?)?;
+</span><span class="boring">        }
+</span><span class="boring">        k += 1;
+</span><span class="boring">    }
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    //data.step()?;
+</span><span class="boring">    //data.log(&amp;fem_outputs[0])?.log(&amp;fem_outputs[1])?;
+</span><span class="boring">    /*
+</span><span class="boring">    // OUTPUTS SAVING
+</span><span class="boring">    let mut f = File::create(fem_data_path.join(&quot;mount_control.data.pkl&quot;)).unwrap();
+</span><span class="boring">    pkl::to_writer(
+</span><span class="boring">        &amp;mut f,
+</span><span class="boring">        &amp;[
+</span><span class="boring">            data.time_series(m1_rbm),
+</span><span class="boring">            data.time_series(m2_rbm),
+</span><span class="boring">            //data.time_series(M1HPLC::new()),
+</span><span class="boring">            //data.time_series(M1CGFM::new()),
+</span><span class="boring">            //data.time_series(OSSAzEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSElEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSRotEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(MountCmd::new()),
+</span><span class="boring">        ],
+</span><span class="boring">        true,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">     */
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
 <p>Finally, the dynamic simulation is implemented such as wind loads are applied to the FEM of the telescope with the feedback loop controller between the mount 3 rotational axes drives and encoders and between M1 segments hardpoints and center of gravity:</p>
-<pre><code class="language-rust ignore">    let mut mount_drives_forces = Some(vec![
+<pre><code class="language-rust ignore"><span class="boring">use dosio::{io::jar::*, io::IO, Dos};
+</span><span class="boring">use fem::{dos::DiscreteStateSpace, FEM};
+</span><span class="boring">use m1_ctrl as m1;
+</span><span class="boring">use mount_ctrl as mount;
+</span><span class="boring">//use serde_pickle as pkl;
+</span><span class="boring">use simple_logger::SimpleLogger;
+</span><span class="boring">use windloading::WindLoads;
+</span><span class="boring">//use std::error::Error;
+</span><span class="boring">use std::path::Path;
+</span><span class="boring">use std::time::Instant;
+</span><span class="boring">//use std::{fs::File, io::Error};
+</span><span class="boring">
+</span><span class="boring">struct Timer {
+</span><span class="boring">    time: Instant,
+</span><span class="boring">}
+</span><span class="boring">impl Timer {
+</span><span class="boring">    pub fn tic() -&gt; Self {
+</span><span class="boring">        Self {
+</span><span class="boring">            time: Instant::now(),
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">    pub fn toc(self) -&gt; f64 {
+</span><span class="boring">        self.time.elapsed().as_secs_f64()
+</span><span class="boring">    }
+</span><span class="boring">    pub fn print_toc(self) {
+</span><span class="boring">        println!(&quot;... in {:3}s&quot;, self.toc());
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+</span><span class="boring">    SimpleLogger::new().init().unwrap();
+</span><span class="boring">    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
+</span><span class="boring">    // WIND LOADS
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    println!(&quot;Loading wind loads ...&quot;);
+</span><span class="boring">    let mut wind_loading = WindLoads::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+</span><span class="boring">    )?
+</span><span class="boring">    .range(0.0, 20.0)
+</span><span class="boring">    .truss()?
+</span><span class="boring">    .m2_asm_topend()?
+</span><span class="boring">    .m1_segments()?
+</span><span class="boring">    .m1_cell()?
+</span><span class="boring">    .m2_asm_reference_bodies()?
+</span><span class="boring">    .build()?;
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // MOUNT CONTROL
+</span><span class="boring">    let mut mnt_drives = mount::drives::Controller::new();
+</span><span class="boring">    let mut mnt_ctrl = mount::controller::Controller::new();
+</span><span class="boring">
+</span><span class="boring">    // M1
+</span><span class="boring">    let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
+</span><span class="boring">    let mut m1_ctrl = m1::cg_controller::Controller::new();
+</span><span class="boring">
+</span><span class="boring">    // FEM
+</span><span class="boring">    let sampling_rate = 1e3;
+</span><span class="boring">    let m1_rbm = OSSM1Lcl::io();
+</span><span class="boring">    let m2_rbm = MCM2RB6D::io();
+</span><span class="boring">    let tic = Timer::tic();
+</span><span class="boring">    println!(&quot;Building FEM dynamic model...&quot;);
+</span><span class="boring">    let mut fem = DiscreteStateSpace::from(FEM::from_pickle(
+</span><span class="boring">        fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;),
+</span><span class="boring">    )?)
+</span><span class="boring">    .dump_eigen_frequencies(fem_data_path.join(&quot;eigen_frequencies.pkl&quot;))
+</span><span class="boring">    .sampling(sampling_rate)
+</span><span class="boring">    .proportional_damping(2. / 100.)
+</span><span class="boring">    .max_eigen_frequency(75.0)
+</span><span class="boring">    .inputs_from(&amp;wind_loading)
+</span><span class="boring">    .inputs_from(&amp;mnt_drives)
+</span><span class="boring">    .outputs(vec![m1_rbm, m2_rbm])
+</span><span class="boring">    .outputs(vec![
+</span><span class="boring">        OSSAzEncoderAngle::io(),
+</span><span class="boring">        OSSElEncoderAngle::io(),
+</span><span class="boring">        OSSRotEncoderAngle::io(),
+</span><span class="boring">    ])
+</span><span class="boring">    .outputs(vec![OSSHardpointD::io()])
+</span><span class="boring">    .build()?;
+</span><span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    /*let mut data = DataLogging::new()
+</span><span class="boring">    .sampling_rate(sampling_rate)
+</span><span class="boring">    //.key(m1_rbm.clone())
+</span><span class="boring">    //.key(m2_rbm.clone())
+</span><span class="boring">    .build();*/
+</span><span class="boring">
+</span><span class="boring">    // FEEDBACK LOOP
+</span><span class="boring">    println!(&quot;Running model ...&quot;);
+</span><span class="boring">    let tic = Timer::tic();
+</span>   let mut mount_drives_forces = Some(vec![
        OSSAzDriveTorque::io_with(vec![0f64; 12]),
        OSSElDriveTorque::io_with(vec![0f64; 4]),
        OSSRotDriveTorque::io_with(vec![0f64; 4]),
@@ -888,7 +1549,33 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
        }
        k += 1;
    }
-</code></pre>
+<span class="boring">    tic.print_toc();
+</span><span class="boring">
+</span><span class="boring">    // DATA LOGGING
+</span><span class="boring">    //data.step()?;
+</span><span class="boring">    //data.log(&amp;fem_outputs[0])?.log(&amp;fem_outputs[1])?;
+</span><span class="boring">    /*
+</span><span class="boring">    // OUTPUTS SAVING
+</span><span class="boring">    let mut f = File::create(fem_data_path.join(&quot;mount_control.data.pkl&quot;)).unwrap();
+</span><span class="boring">    pkl::to_writer(
+</span><span class="boring">        &amp;mut f,
+</span><span class="boring">        &amp;[
+</span><span class="boring">            data.time_series(m1_rbm),
+</span><span class="boring">            data.time_series(m2_rbm),
+</span><span class="boring">            //data.time_series(M1HPLC::new()),
+</span><span class="boring">            //data.time_series(M1CGFM::new()),
+</span><span class="boring">            //data.time_series(OSSAzEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSElEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(OSSRotEncoderAngle::new()),
+</span><span class="boring">            //data.time_series(MountCmd::new()),
+</span><span class="boring">        ],
+</span><span class="boring">        true,
+</span><span class="boring">    )
+</span><span class="boring">    .unwrap();
+</span><span class="boring">     */
+</span><span class="boring">    Ok(())
+</span><span class="boring">}
+</span></code></pre>
 <h1 id="appendix"><a class="header" href="#appendix">Appendix</a></h1>
 <h1 id="io-variants"><a class="header" href="#io-variants">IO variants</a></h1>
 <pre><code class="language-rust ignore">    // Uniform Wind Pressure

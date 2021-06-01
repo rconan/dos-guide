@@ -170,11 +170,11 @@
                         <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <p>CEO compiles only on a machine with a NVIDIA GPU installed and with the CUDA API present. 
 CEO installation steps are given <a href="https://github.com/rconan/CEO">here</a>.</p>
-<p>CEO bindings crate <code>crseo</code>, needs to be added to the dependencies list in the <em>Cargo.toml</em> file of your project, both the <code>dosio</code> crate and the dosio feature of <code>crseo</code> are required in order to compile the <em>Dos</em> interface:</p>
+<p>CEO bindings crate <code>crseo</code>, needs to be added to the dependencies list in the <em>Cargo.toml</em> file of your project, both the <code>dosio</code> crate and the <code>dos</code> feature of <code>crseo</code> are required in order to compile the <em>Dos</em> interface:</p>
 <pre><code class="language-toml">dosio = { git = &quot;https://github.com/rconan/dosio.git&quot;, branch = &quot;main&quot; }
 # should be the git url, but with the git repo, CEO does not compile? 
-crseo = { path = &quot;/home/rconan/projects/crseo&quot; , features = [&quot;dosio&quot;]}
-#crseo = { git = &quot;https://github.com/rconan/crseo.git&quot;, branch = &quot;main&quot;, features = [&quot;dosio&quot;] }
+crseo = { path = &quot;/home/rconan/projects/crseo&quot; , features = [&quot;dos&quot;]}
+#crseo = { git = &quot;https://github.com/rconan/crseo.git&quot;, branch = &quot;main&quot;, features = [&quot;dos&quot;] }
 </code></pre>
 
                     </main>
