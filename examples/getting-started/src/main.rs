@@ -41,13 +41,12 @@ impl Dos for Integrate {
     fn inputs(&mut self, data: Option<Vec<IO<Self::Input>>>) -> Result<&mut Self, DOSIOSError> {
         self.u = data
             // Identifying M2 42 segment rigid body motion IO variant
-            .map(|data| {
+            .and_then(|data| {
                 data.into_iter().find_map(|io| match io {
                     IO::MCM2RB6D { data: value } => value,
                     _ => None,
                 })
             })
-            .flatten()
             // Extracting M2 14 Rx and Ry rigid body motions
             .map(|x| {
                 x.chunks(6)

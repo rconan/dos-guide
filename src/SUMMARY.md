@@ -20,8 +20,6 @@
    
  - [Controllers](controllers.md)
    - [Simulink](controllers/simulink.md)
-     - [Mount Control System](controllers/simulink/mount.md)
-     - [M1 Control System](controllers/simulink/m1.md)
 
  - [Appendix](appendix.md)
    - [IO variants](dos-io-variants.md)

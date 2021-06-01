@@ -32,8 +32,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let fem_data_path = Path::new("data").join("20210225_1447_MT_mount_v202102_ASM_wind2");
     // WIND LOADS
     let tic = Timer::tic();
+    // ANCHOR: windloads
     println!("Loading wind loads ...");
-    //let n_sample = 20 * 1000;
     let mut wind_loading = WindLoads::from_pickle(
         fem_data_path.join("b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl"),
     )?
@@ -44,17 +44,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     .m1_cell()?
     .m2_asm_reference_bodies()?
     .build()?;
+    // ANCHOR_END: windloads
     tic.print_toc();
+
     // MOUNT CONTROL
+    // ANCHOR: mount_control
     let mut mnt_drives = mount::drives::Controller::new();
     let mut mnt_ctrl = mount::controller::Controller::new();
+    // ANCHOR_END: mount_control
 
     // M1
+    // ANCHOR: m1_control
     let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
     let mut m1_ctrl = m1::cg_controller::Controller::new();
+    // ANCHOR_END: m1_control
 
     // FEM
-    //let fem_data_path = Path::new("data").join("20210326_1803_MT_mount_v202102_M1_fans_OSSOnly");
+    // ANCHOR: fem
     let sampling_rate = 1e3;
     let m1_rbm = OSSM1Lcl::io();
     let m2_rbm = MCM2RB6D::io();
@@ -77,6 +83,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ])
     .outputs(vec![OSSHardpointD::io()])
     .build()?;
+    // ANCHOR_END: fem
     tic.print_toc();
 
     // DATA LOGGING
@@ -86,15 +93,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //.key(m2_rbm.clone())
     .build();*/
 
+    // FEEDBACK LOOP
     println!("Running model ...");
     let tic = Timer::tic();
+    // ANCHOR: feedback_loop
     let mut mount_drives_forces = Some(vec![
         OSSAzDriveTorque::io_with(vec![0f64; 12]),
         OSSElDriveTorque::io_with(vec![0f64; 4]),
         OSSRotDriveTorque::io_with(vec![0f64; 4]),
     ]);
     let mut m1_cg_fm: Option<Vec<IO<Vec<f64>>>> = None;
-    // FEEDBACK LOOP
     let mut k = 0;
     while let Some(mut fem_forces) = wind_loading.outputs() {
         // FEM
@@ -120,20 +128,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // M1 HARDPOINT & CG CONTROLLER
         if k % 10 == 0 {
             let mut m1_hp = vec![M1HPCmd::io_with(vec![0f64; 42])];
-            let id: IO<()> = OSSHardpointD::io();
-            m1_hp.extend_from_slice(&[fem_outputs[id].clone()]);
-            m1_cg_fm = m1_hardpoints
-                .in_step_out(Some(m1_hp))?
-                .map(|x| m1_ctrl.in_step_out(Some(x)))
-                .unwrap()?;
+            m1_hp.extend_from_slice(&[fem_outputs[OSSHardpointD::io::<()>()].clone()]);
+            m1_cg_fm = m1_ctrl.in_step_out(m1_hardpoints.in_step_out(Some(m1_hp))?)?;
         }
-        // DATA LOGGING
-        //data.step()?;
-        //data.log(&fem_outputs[0])?.log(&fem_outputs[1])?;
         k += 1;
     }
+    // ANCHOR_END: feedback_loop
     tic.print_toc();
 
+    // DATA LOGGING
+    //data.step()?;
+    //data.log(&fem_outputs[0])?.log(&fem_outputs[1])?;
     /*
     // OUTPUTS SAVING
     let mut f = File::create(fem_data_path.join("mount_control.data.pkl")).unwrap();
