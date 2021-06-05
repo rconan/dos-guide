@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started/installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started/dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html" class="active"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model/installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model/dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem/installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem/dos-interface.html"><strong aria-hidden="true">3.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="wind-loading.html"><strong aria-hidden="true">4.</strong> Wind Loading</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="wind-loading/installation.html"><strong aria-hidden="true">4.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="wind-loading/dos-interface.html"><strong aria-hidden="true">4.2.</strong> Dos Interface</a></li></ol></li><li class="chapter-item expanded "><a href="controllers.html"><strong aria-hidden="true">5.</strong> Controllers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="controllers/simulink.html"><strong aria-hidden="true">5.1.</strong> Simulink</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">6.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">6.1.</strong> IO variants</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started/installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started/dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html" class="active"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model/installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model/dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem/installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem/dos-interface.html"><strong aria-hidden="true">3.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="wind-loading.html"><strong aria-hidden="true">4.</strong> Wind Loading</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="wind-loading/installation.html"><strong aria-hidden="true">4.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="wind-loading/dos-interface.html"><strong aria-hidden="true">4.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="controllers.html"><strong aria-hidden="true">5.</strong> Controllers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="controllers/simulink.html"><strong aria-hidden="true">5.1.</strong> Simulink</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">6.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">6.1.</strong> IO variants</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -212,6 +212,21 @@ A Rust binding for CEO is provided by the crate <a href="https://github.com/rcon
 
         </div>
 
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
         
 
         

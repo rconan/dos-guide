@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction - DOS Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="GMT Dynamic Optics Simulation User Guide">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html" class="active">Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="getting-started/installation.html"><strong aria-hidden="true">1.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="getting-started/dos-interface.html"><strong aria-hidden="true">1.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="optical-model.html"><strong aria-hidden="true">2.</strong> Optical Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="optical-model/installation.html"><strong aria-hidden="true">2.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="optical-model/dos-interface.html"><strong aria-hidden="true">2.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="fem.html"><strong aria-hidden="true">3.</strong> Finite Element Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fem/installation.html"><strong aria-hidden="true">3.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="fem/dos-interface.html"><strong aria-hidden="true">3.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="wind-loading.html"><strong aria-hidden="true">4.</strong> Wind Loading</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="wind-loading/installation.html"><strong aria-hidden="true">4.1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="wind-loading/dos-interface.html"><strong aria-hidden="true">4.2.</strong> DOS Interface</a></li></ol></li><li class="chapter-item expanded "><a href="controllers.html"><strong aria-hidden="true">5.</strong> Controllers</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="controllers/simulink.html"><strong aria-hidden="true">5.1.</strong> Simulink</a></li></ol></li><li class="chapter-item expanded "><a href="appendix.html"><strong aria-hidden="true">6.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="dos-io-variants.html"><strong aria-hidden="true">6.1.</strong> IO variants</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">DOS Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rconan/dos-guide" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>The <em>Dynamic Optics Simulation</em>, or <em>DOS</em> for short, is the simulation software developed by the Integrated Modeling team of the GMTO project to write the end-to-end models of the Observatory.
+As its core, the <em>DOS</em> provide a software framework to build the necessary interfaces with the many components of the end-to-end model like the <a href="ch01-00-optical-model.html">optical model</a> or the <a href="ch02-00-fem.html">finite element model</a>. 
+The <em>DOS</em> framework also provides all the possible inputs and outputs to the different model components.</p>
+<p>The <em>DOS</em> framework is written in <a href="https://www.rust-lang.org">Rust</a>, the Rust language is a high level zero-cost abstraction language that is well suited for this kind of high performance computing application as, once compiled, and despite beeing a high level language, the runtime execution speed is comparable to what would have given a C or C++ equivalent program.</p>
+<p>A <em>DOS</em> simulation is built from a collection of models, each model is implemented within a different Rust crate.
+In each crate, there is an implementation of the <em>DOS</em> interface that allows the different models to communicate by passing data to each other.</p>
+<p>The models currently available are listed in the table below:</p>
+<table><thead><tr><th>Model</th><th>Crate</th><th>Github</th><th>Doc</th><th>Examples</th></tr></thead><tbody>
+<tr><td>Optical Model</td><td>crseo</td><td><a href="https://github.com/rconan/crseo"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/crseo"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/optical-model/gmt_optical_model">@</a>, <a href="https://github.com/rconan/dos-guide/tree/main/examples/optical-model/gmt_optical_sensor_model">@</a></td></tr>
+<tr><td>Finite Element Model</td><td>fem</td><td><a href="https://github.com/rconan/fem/tree/dos"><img style="display: inline! important" src="https://img.shields.io/badge/src-dos-green.svg"></img></a></td><td><a href="https://rconan.github.io/fem"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/fem">@</a></td></tr>
+<tr><td>Wind Loading</td><td>windloading</td><td><a href="https://github.com/rconan/windloading"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/windloading"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/wind-loading">@</a></td></tr>
+<tr><td>Mount Control System</td><td>mount-ctrl</td><td><a href="https://github.com/rconan/mount-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/mount-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-red.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/controllers/simulink">@</a></td></tr>
+<tr><td>M1 Control System</td><td>m1-ctrl</td><td><a href="https://github.com/rconan/m1-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/m1-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-red.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/controllers/simulink">@</a></td></tr>
+</tbody></table>
+<p>In addition to the crates for the models, there are other crates that provide specific interfaces:</p>
+<table><thead><tr><th>Interface</th><th>Crate</th><th>Github</th><th>Doc</th></tr></thead><tbody>
+<tr><td>Dos</td><td>dosio</td><td><a href="https://github.com/rconan/dosio"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/dosio"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
+<tr><td>Simulink</td><td>simulink-rs</td><td><a href="https://github.com/rconan/simulink-rs"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/simulink-rs"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
+</tbody></table>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+                            <a rel="next" href="getting-started.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+                    <a rel="next" href="getting-started.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
