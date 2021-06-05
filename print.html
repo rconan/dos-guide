@@ -177,12 +177,12 @@ The <em>DOS</em> framework also provides all the possible inputs and outputs to 
 <p>A <em>DOS</em> simulation is built from a collection of models, each model is implemented within a different Rust crate.
 In each crate, there is an implementation of the <em>DOS</em> interface that allows the different models to communicate by passing data to each other.</p>
 <p>The models currently available are listed in the table below:</p>
-<table><thead><tr><th>Model</th><th>Crate</th><th>Github</th><th>Doc</th></tr></thead><tbody>
-<tr><td>Optical Model</td><td>crseo</td><td><a href="https://github.com/rconan/crseo"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/crseo"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
-<tr><td>Finite Element Model</td><td>fem</td><td><a href="https://github.com/rconan/fem/tree/dos"><img style="display: inline! important" src="https://img.shields.io/badge/src-dos-green.svg"></img></a></td><td><a href="https://rconan.github.io/fem"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
-<tr><td>Wind Loading</td><td>windloading</td><td><a href="https://github.com/rconan/windloading"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/windloading"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td></tr>
-<tr><td>Mount Control System</td><td>mount-ctrl</td><td><a href="https://github.com/rconan/mount-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/mount-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-red.svg"></img></a></td></tr>
-<tr><td>M1 Control System</td><td>m1-ctrl</td><td><a href="https://github.com/rconan/m1-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/m1-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-red.svg"></img></a></td></tr>
+<table><thead><tr><th>Model</th><th>Crate</th><th>Github</th><th>Doc</th><th>Examples</th></tr></thead><tbody>
+<tr><td>Optical Model</td><td>crseo</td><td><a href="https://github.com/rconan/crseo"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/crseo"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/optical-model/gmt_optical_model">@</a>, <a href="https://github.com/rconan/dos-guide/tree/main/examples/optical-model/gmt_optical_sensor_model">@</a></td></tr>
+<tr><td>Finite Element Model</td><td>fem</td><td><a href="https://github.com/rconan/fem/tree/dos"><img style="display: inline! important" src="https://img.shields.io/badge/src-dos-green.svg"></img></a></td><td><a href="https://rconan.github.io/fem"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/fem">@</a></td></tr>
+<tr><td>Wind Loading</td><td>windloading</td><td><a href="https://github.com/rconan/windloading"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/windloading"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-green.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/wind-loading">@</a></td></tr>
+<tr><td>Mount Control System</td><td>mount-ctrl</td><td><a href="https://github.com/rconan/mount-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/mount-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-red.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/controllers/simulink">@</a></td></tr>
+<tr><td>M1 Control System</td><td>m1-ctrl</td><td><a href="https://github.com/rconan/m1-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/src-main-green.svg"></img></a></td><td><a href="https://rconan.github.io/m1-ctrl"><img style="display: inline! important" src="https://img.shields.io/badge/doc-current-red.svg"></img></a></td><td><a href="https://github.com/rconan/dos-guide/tree/main/examples/controllers/simulink">@</a></td></tr>
 </tbody></table>
 <p>In addition to the crates for the models, there are other crates that provide specific interfaces:</p>
 <table><thead><tr><th>Interface</th><th>Crate</th><th>Github</th><th>Doc</th></tr></thead><tbody>
@@ -857,28 +857,28 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
 </span><span class="boring">    let mut m1_ctrl = m1::cg_controller::Controller::new();
 </span><span class="boring">
 </span><span class="boring">    // FEM
-</span>   let sampling_rate = 1e3;
-   let m1_rbm = OSSM1Lcl::io();
-   let m2_rbm = MCM2RB6D::io();
-   let tic = Timer::tic();
-   println!(&quot;Building FEM dynamic model...&quot;);
-   let mut fem = DiscreteStateSpace::from(FEM::from_pickle(
-       fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;),
-   )?)
-   .dump_eigen_frequencies(fem_data_path.join(&quot;eigen_frequencies.pkl&quot;))
-   .sampling(sampling_rate)
-   .proportional_damping(2. / 100.)
-   .max_eigen_frequency(75.0)
-   .inputs_from(&amp;wind_loading)
-   .inputs_from(&amp;mnt_drives)
-   .outputs(vec![m1_rbm, m2_rbm])
-   .outputs(vec![
-       OSSAzEncoderAngle::io(),
-       OSSElEncoderAngle::io(),
-       OSSRotEncoderAngle::io(),
-   ])
-   .outputs(vec![OSSHardpointD::io()])
-   .build()?;
+</span>    let sampling_rate = 1e3;
+    let m1_rbm = OSSM1Lcl::io();
+    let m2_rbm = MCM2RB6D::io();
+    let tic = Timer::tic();
+    println!(&quot;Building FEM dynamic model...&quot;);
+    let mut fem = DiscreteStateSpace::from(FEM::from_pickle(
+        fem_data_path.join(&quot;modal_state_space_model_2ndOrder.73.pkl&quot;),
+    )?)
+    .dump_eigen_frequencies(fem_data_path.join(&quot;eigen_frequencies.pkl&quot;))
+    .sampling(sampling_rate)
+    .proportional_damping(2. / 100.)
+    .max_eigen_frequency(75.0)
+    .inputs_from(&amp;wind_loading)
+    .inputs_from(&amp;mnt_drives)
+    .outputs(vec![m1_rbm, m2_rbm])
+    .outputs(vec![
+        OSSAzEncoderAngle::io(),
+        OSSElEncoderAngle::io(),
+        OSSRotEncoderAngle::io(),
+    ])
+    .outputs(vec![OSSHardpointD::io()])
+    .build()?;
 <span class="boring">    tic.print_toc();
 </span><span class="boring">
 </span><span class="boring">    // DATA LOGGING
@@ -991,17 +991,17 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
 </span><span class="boring">    let fem_data_path = Path::new(&quot;data&quot;).join(&quot;20210225_1447_MT_mount_v202102_ASM_wind2&quot;);
 </span><span class="boring">    // WIND LOADS
 </span><span class="boring">    let tic = Timer::tic();
-</span>   println!(&quot;Loading wind loads ...&quot;);
-   let mut wind_loading = WindLoads::from_pickle(
-       fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
-   )?
-   .range(0.0, 20.0)
-   .truss()?
-   .m2_asm_topend()?
-   .m1_segments()?
-   .m1_cell()?
-   .m2_asm_reference_bodies()?
-   .build()?;
+</span>    println!(&quot;Loading wind loads ...&quot;);
+    let mut wind_loading = WindLoads::from_pickle(
+        fem_data_path.join(&quot;b2019_0z_30az_os_7ms.wind_loads_1kHz_100-400s.pkl&quot;),
+    )?
+    .range(0.0, 20.0)
+    .truss()?
+    .m2_asm_topend()?
+    .m1_segments()?
+    .m1_cell()?
+    .m2_asm_reference_bodies()?
+    .build()?;
 <span class="boring">    tic.print_toc();
 </span><span class="boring">
 </span><span class="boring">    // MOUNT CONTROL
@@ -1161,8 +1161,8 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
 </span><span class="boring">    tic.print_toc();
 </span><span class="boring">
 </span><span class="boring">    // MOUNT CONTROL
-</span>   let mut mnt_drives = mount::drives::Controller::new();
-   let mut mnt_ctrl = mount::controller::Controller::new();
+</span>    let mut mnt_drives = mount::drives::Controller::new();
+    let mut mnt_ctrl = mount::controller::Controller::new();
 <span class="boring">
 </span><span class="boring">    // M1
 </span><span class="boring">    let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
@@ -1321,8 +1321,8 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
 </span><span class="boring">    let mut mnt_ctrl = mount::controller::Controller::new();
 </span><span class="boring">
 </span><span class="boring">    // M1
-</span>   let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
-   let mut m1_ctrl = m1::cg_controller::Controller::new();
+</span>    let mut m1_hardpoints = m1::hp_load_cells::Controller::new();
+    let mut m1_ctrl = m1::cg_controller::Controller::new();
 <span class="boring">
 </span><span class="boring">    // FEM
 </span><span class="boring">    let sampling_rate = 1e3;
@@ -1513,42 +1513,42 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
 </span><span class="boring">    // FEEDBACK LOOP
 </span><span class="boring">    println!(&quot;Running model ...&quot;);
 </span><span class="boring">    let tic = Timer::tic();
-</span>   let mut mount_drives_forces = Some(vec![
-       OSSAzDriveTorque::io_with(vec![0f64; 12]),
-       OSSElDriveTorque::io_with(vec![0f64; 4]),
-       OSSRotDriveTorque::io_with(vec![0f64; 4]),
-   ]);
-   let mut m1_cg_fm: Option&lt;Vec&lt;IO&lt;Vec&lt;f64&gt;&gt;&gt;&gt; = None;
-   let mut k = 0;
-   while let Some(mut fem_forces) = wind_loading.outputs() {
-       // FEM
-       mount_drives_forces.as_mut().map(|x| {
-           fem_forces.append(x);
-       });
-       m1_cg_fm.as_ref().map(|x| {
-           fem_forces[OSSM1Lcl6F::io()] += &amp;x[0];
-           fem_forces[OSSCellLcl6F::io()] -= &amp;x[0];
-       });
-       let fem_outputs = fem
-           .in_step_out(Some(fem_forces))?
-           .ok_or(&quot;FEM output is empty&quot;)?;
-       // MOUNT CONTROLLER &amp; DRIVES
-       let mount_encoders = &amp;fem_outputs[2..5];
-       mount_drives_forces = mnt_ctrl
-           .in_step_out(Some(mount_encoders.to_vec()))?
-           .map(|mut x| {
-               x.extend_from_slice(mount_encoders);
-               mnt_drives.in_step_out(Some(x))
-           })
-           .unwrap()?;
-       // M1 HARDPOINT &amp; CG CONTROLLER
-       if k % 10 == 0 {
-           let mut m1_hp = vec![M1HPCmd::io_with(vec![0f64; 42])];
-           m1_hp.extend_from_slice(&amp;[fem_outputs[OSSHardpointD::io::&lt;()&gt;()].clone()]);
-           m1_cg_fm = m1_ctrl.in_step_out(m1_hardpoints.in_step_out(Some(m1_hp))?)?;
-       }
-       k += 1;
-   }
+</span>    let mut mount_drives_forces = Some(vec![
+        OSSAzDriveTorque::io_with(vec![0f64; 12]),
+        OSSElDriveTorque::io_with(vec![0f64; 4]),
+        OSSRotDriveTorque::io_with(vec![0f64; 4]),
+    ]);
+    let mut m1_cg_fm: Option&lt;Vec&lt;IO&lt;Vec&lt;f64&gt;&gt;&gt;&gt; = None;
+    let mut k = 0;
+    while let Some(mut fem_forces) = wind_loading.outputs() {
+        // FEM
+        mount_drives_forces.as_mut().map(|x| {
+            fem_forces.append(x);
+        });
+        m1_cg_fm.as_ref().map(|x| {
+            fem_forces[OSSM1Lcl6F::io()] += &amp;x[0];
+            fem_forces[OSSCellLcl6F::io()] -= &amp;x[0];
+        });
+        let fem_outputs = fem
+            .in_step_out(Some(fem_forces))?
+            .ok_or(&quot;FEM output is empty&quot;)?;
+        // MOUNT CONTROLLER &amp; DRIVES
+        let mount_encoders = &amp;fem_outputs[2..5];
+        mount_drives_forces = mnt_ctrl
+            .in_step_out(Some(mount_encoders.to_vec()))?
+            .map(|mut x| {
+                x.extend_from_slice(mount_encoders);
+                mnt_drives.in_step_out(Some(x))
+            })
+            .unwrap()?;
+        // M1 HARDPOINT &amp; CG CONTROLLER
+        if k % 10 == 0 {
+            let mut m1_hp = vec![M1HPCmd::io_with(vec![0f64; 42])];
+            m1_hp.extend_from_slice(&amp;[fem_outputs[OSSHardpointD::io::&lt;()&gt;()].clone()]);
+            m1_cg_fm = m1_ctrl.in_step_out(m1_hardpoints.in_step_out(Some(m1_hp))?)?;
+        }
+        k += 1;
+    }
 <span class="boring">    tic.print_toc();
 </span><span class="boring">
 </span><span class="boring">    // DATA LOGGING
@@ -1734,21 +1734,6 @@ windloading = { git = &quot;https://github.com/rconan/windloading.git&quot;, bra
 
         </div>
 
-        
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         
 
         
