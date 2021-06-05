@@ -12,4 +12,4 @@ edition = "2018"
 [output.html]
 git-repository-url = "https://github.com/rconan/dos-guide"
 
-[output.markdown]
+#[output.markdown]
