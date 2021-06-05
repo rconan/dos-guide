@@ -12,11 +12,11 @@
 
  - [Finite Element Model](fem.md)
    - [Installation](fem/installation.md)
-   - [Dos Interface](fem/dos-interface.md)
+   - [DOS Interface](fem/dos-interface.md)
    
  - [Wind Loading](wind-loading.md)
    - [Installation](wind-loading/installation.md)
-   - [Dos Interface](wind-loading/dos-interface.md)
+   - [DOS Interface](wind-loading/dos-interface.md)
    
  - [Controllers](controllers.md)
    - [Simulink](controllers/simulink.md)

@@ -4,3 +4,13 @@ target
 *rustic-mode*
 *data/
 Cargo.lock
+*.aux
+*.bcf
+*.lof
+*.log
+*.lot
+*.pdf
+*.xml
+*.toc
+dos.tex
+auto
