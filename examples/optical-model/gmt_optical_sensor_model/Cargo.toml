@@ -6,6 +6,4 @@ edition = "2018"
 
 [dependencies]
 dosio = { git = "https://github.com/rconan/dosio.git", branch = "main" }
-# should be the git url, but with the git repo, CEO does not compile? 
-crseo = { path = "/home/rconan/projects/crseo" , features = ["dos"]}
-#crseo = { git = "https://github.com/rconan/crseo.git", branch = "main", features = ["dos"] }
+crseo = { git = "https://github.com/rconan/crseo.git", branch = "main", features = ["dos"] }

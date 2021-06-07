@@ -1,4 +1,4 @@
-.PHONY: all getting-started optical-model fem wind-loading
+.PHONY: all getting-started optical-model optical-sensor-model fem wind-loading
 GMT_MODES_PATH := /home/rconan/projects/crseo/CEO/gmtMirrors/
 
 all: getting-started optical-model fem wind-loading
@@ -10,7 +10,8 @@ optical-model:
 	cd $@/gmt_optical_model && \
 		export GMT_MODES_PATH=/home/rconan/projects/crseo/CEO/gmtMirrors/ && \
 		cargo run --release
-	cd $@/gmt_optical_sensor_model && \
+optical-sensor-model:
+	cd optical-model/gmt_optical_sensor_model && \
 		export GMT_MODES_PATH=/home/rconan/projects/crseo/CEO/gmtMirrors/ && \
 		cargo run --release
 

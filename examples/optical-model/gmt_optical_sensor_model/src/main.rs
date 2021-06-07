@@ -11,7 +11,7 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
     println!("GS band: {}", gosm.src.get_photometric_band());
 
     let y = gosm.in_step_out(None)?.unwrap();
-    let sensor_data: Option<Vec<f64>> = (&y[jar::SensorData::io()]).into();
+    let sensor_data: Option<Vec<f64>> = (&y[jar::SensorData::io::<Vec<f64>>()]).into();
     println!("sensor data size: {:}", sensor_data.unwrap().len());
 
     Ok(())
