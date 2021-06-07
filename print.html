@@ -550,7 +550,7 @@ fn main() -&gt; std::result::Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; 
     println!(&quot;GS band: {}&quot;, gosm.src.get_photometric_band());
 
     let y = gosm.in_step_out(None)?.unwrap();
-    let sensor_data: Option&lt;Vec&lt;f64&gt;&gt; = (&amp;y[jar::SensorData::io()]).into();
+    let sensor_data: Option&lt;Vec&lt;f64&gt;&gt; = (&amp;y[jar::SensorData::io::&lt;Vec&lt;f64&gt;&gt;()]).into();
     println!(&quot;sensor data size: {:}&quot;, sensor_data.unwrap().len());
 
     Ok(())
